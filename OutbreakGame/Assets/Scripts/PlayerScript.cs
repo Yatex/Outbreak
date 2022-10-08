@@ -82,6 +82,7 @@ public class PlayerScript : MonoBehaviour
         {
 
             animator.SetBool("Idle", false);
+            animator.SetBool("Walk", false);
             animator.SetTrigger("Jump");
 
             velocity.y = Mathf.Sqrt(jumpRange * -2 * gravity);
