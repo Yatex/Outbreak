@@ -15,4 +15,4 @@ MonoBehaviour:
   _statValues:
     MaxLife: 100
     MovementSpeed: 5
-    RotationSpeed: 0
+    RotationSpeed: 5
