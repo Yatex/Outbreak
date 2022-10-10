@@ -26,6 +26,8 @@ public class Character : Actor
     /*  COMANDOS    */
     private CmdMovement _cmdMoveForward;
     private CmdMovement _cmdMoveBack;
+    private CmdMovement _cmdMoveLeft;
+    private CmdMovement _cmdMoveRight;
     private CmdRotation _cmdRotateLeft;
     private CmdRotation _cmdRotateRight;
     private CmdAttack _cmdAttack;
@@ -38,6 +40,8 @@ public class Character : Actor
 
         _cmdMoveForward = new CmdMovement(_movementController, Vector3.forward);
         _cmdMoveBack = new CmdMovement(_movementController, Vector3.back);
+        _cmdMoveLeft = new CmdMovement(_movementController, Vector3.left);
+        _cmdMoveRight = new CmdMovement(_movementController, Vector3.right);
         _cmdRotateLeft = new CmdRotation(_movementController, Vector3.left);
         _cmdRotateRight = new CmdRotation(_movementController, Vector3.right);
         _cmdAttack = new CmdAttack(_currentGun);
@@ -52,7 +56,9 @@ public class Character : Actor
         if(Input.GetKey(_moveBackward)) EventQueueManager.instance.AddCommand(_cmdMoveBack);
         EventQueueManager.instance.AddCommand(_cmdRotateLeft);
         EventQueueManager.instance.AddCommand(_cmdRotateRight);
-        if(Input.GetKey(_moveLeft)) EventQueueManager.instance.AddCommand(_cmdRotateLeft);
+        if (Input.GetKey(_moveLeft)) EventQueueManager.instance.AddCommand(_cmdMoveLeft);
+        if (Input.GetKey(_moveRight)) EventQueueManager.instance.AddCommand(_cmdMoveRight);
+        if (Input.GetKey(_moveLeft)) EventQueueManager.instance.AddCommand(_cmdRotateLeft);
         if(Input.GetKey(_moveRight)) EventQueueManager.instance.AddCommand(_cmdRotateRight);
 
         if (Input.GetKeyDown(_reload)) _currentGun.Reload();
