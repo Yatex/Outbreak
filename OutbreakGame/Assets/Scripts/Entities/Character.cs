@@ -81,15 +81,28 @@ public class Character : Actor
         {
             EventQueueManager.instance.AddCommand(_cmdMoveLeft);
             EventQueueManager.instance.AddCommand(_cmdRotateLeft);
-            transform.rotation = Quaternion.Euler(0, 50, 0);
-            Walk();
+            if (Input.GetButton("Sprint") && Input.GetKey(_moveForward))
+            {
+                Sprint();
+            }
+            else
+            {
+                Walk();
+            }
         }
         
         if (Input.GetKey(_moveRight))
         {
             EventQueueManager.instance.AddCommand(_cmdMoveRight);
             EventQueueManager.instance.AddCommand(_cmdRotateRight);
-            Walk(); 
+            if (Input.GetButton("Sprint") && Input.GetKey(_moveForward))
+            {
+                Sprint();
+            }
+            else
+            {
+                Walk();
+            }
         }
         
 
