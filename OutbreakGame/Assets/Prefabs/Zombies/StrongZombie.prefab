@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6712113482441348797}
   - component: {fileID: 7731154321985708862}
   - component: {fileID: 9104372774227174923}
+  - component: {fileID: -7018849562067488154}
   m_Layer: 0
   m_Name: StrongZombie
   m_TagString: Untagged
@@ -104,6 +105,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1f3bcb2c3d238f41b75f057013dc9e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &-7018849562067488154
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2743197945202521756}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 0085ca3ca2e4d994e8e38b07f44ab7d7, type: 3}
+  m_Controller: {fileID: 9100000, guid: 936f128f6b0d00a468ca53081fd4704f, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1001 &3138859853266546818
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -30,9 +30,9 @@ class ZombieSpawnerManager : MonoBehaviour
     void Update(){
         if (ShouldSpawnZombie())
         {
-            var spawnLocation = SpawnerMarkers[Random.Range(0, SpawnerMarkers.Length - 1)];
+            var spawnLocation = SpawnerMarkers[Random.Range(0, SpawnerMarkers.Length)];
 
-            Instantiate(Zombies[0], spawnLocation.transform.position, spawnLocation.transform.rotation);
+            Instantiate(Zombies[Random.Range(0,Zombies.Length)], spawnLocation.transform.position, spawnLocation.transform.rotation);
             AliveZombies += 1;
             SpawnedZombiesThisWave += 1;
             TimeOfLastSpawn = Time.time;
