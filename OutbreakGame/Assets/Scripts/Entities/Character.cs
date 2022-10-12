@@ -14,8 +14,10 @@ public class Character : Actor
     [SerializeField] private KeyCode _moveBackward= KeyCode.S;
     [SerializeField] private KeyCode _moveLeft = KeyCode.A;
     [SerializeField] private KeyCode _moveRight = KeyCode.D;
-    
+    [SerializeField] private KeyCode _jump = KeyCode.Space;
+
     [SerializeField] private KeyCode _attack = KeyCode.Mouse0;
+    [SerializeField] private KeyCode _aim = KeyCode.Mouse1;
     [SerializeField] private KeyCode _reload = KeyCode.R;
 
     [SerializeField] private KeyCode _weaponSlot1 = KeyCode.Alpha1;
@@ -30,6 +32,7 @@ public class Character : Actor
     private CmdMovement _cmdMoveLeft;
     private CmdMovement _cmdMoveRight;
     private CmdSprint _cmdSprintForward;
+    private CmdJump _cmdJump;
     private CmdRotation _cmdRotateLeft;
     private CmdRotation _cmdRotateRight;
     private CmdAttack _cmdAttack;
@@ -48,6 +51,7 @@ public class Character : Actor
         _cmdRotateLeft = new CmdRotation(_movementController, Vector3.left);
         _cmdRotateRight = new CmdRotation(_movementController, Vector3.right);
         _cmdAttack = new CmdAttack(_currentGun);
+        _cmdJump = new CmdJump(_movementController, Vector3.up);
     }
 
     // Update is called once per frame
@@ -61,18 +65,43 @@ public class Character : Actor
             if (Input.GetButton("Sprint")) 
             {
                 EventQueueManager.instance.AddCommand(_cmdSprintForward);
-                Sprint();
+                if (Input.GetKeyDown(_jump))
+                {
+                    EventQueueManager.instance.AddCommand(_cmdJump);
+                    Jump();
+                }
+                else
+                {
+                    Sprint();
+                }
+            }
+            else if (Input.GetKey(_aim))
+            {
+                AimWalk();
+            }
+            else if (Input.GetKeyDown(_jump))
+            {
+                EventQueueManager.instance.AddCommand(_cmdJump);
+                Jump();
             }
             else
             {
                 Walk();
             }
+
         }
             
         if(Input.GetKey(_moveBackward))
         {
             EventQueueManager.instance.AddCommand(_cmdMoveBack);
-            Walk();
+            if (Input.GetKey(_aim))
+            {
+                AimWalk();
+            }
+            else
+            {
+                Walk();
+            }
         }
         
         EventQueueManager.instance.AddCommand(_cmdRotateLeft);
@@ -83,7 +112,19 @@ public class Character : Actor
             EventQueueManager.instance.AddCommand(_cmdRotateLeft);
             if (Input.GetButton("Sprint") && Input.GetKey(_moveForward))
             {
-                Sprint();
+                if (Input.GetKeyDown(_jump))
+                {
+                    EventQueueManager.instance.AddCommand(_cmdJump);
+                    Jump();
+                }
+                else
+                {
+                    Sprint();
+                }
+            }
+            else if (Input.GetKey(_aim))
+            {
+                AimWalk();
             }
             else
             {
@@ -97,18 +138,24 @@ public class Character : Actor
             EventQueueManager.instance.AddCommand(_cmdRotateRight);
             if (Input.GetButton("Sprint") && Input.GetKey(_moveForward))
             {
-                Sprint();
+                if (Input.GetKeyDown(_jump))
+                {
+                    EventQueueManager.instance.AddCommand(_cmdJump);
+                    Jump();
+                }
+                else
+                {
+                    Sprint();
+                }
+            }
+            else if (Input.GetKey(_aim))
+            {
+                AimWalk();
             }
             else
             {
                 Walk();
             }
-        }
-        
-
-        if (Input.GetKeyDown(_reload))
-        {
-            _currentGun.Reload();
         }
        
         if(Input.GetKeyDown(_attack))
@@ -139,7 +186,32 @@ public class Character : Actor
 
         if (!Input.GetKey(_moveLeft) && !Input.GetKey(_moveRight) && !Input.GetKey(_moveForward) && !Input.GetKey(_moveBackward))
         {
-            Idle();
+            if (Input.GetKey(_aim))
+            {
+                if (Input.GetKey(_reload))
+                {
+                    Reload();
+                    // _currentGun.Reload();
+                }
+                else
+                {
+                    Aim();
+                }
+            }
+            else if (Input.GetKey(_reload))
+            {
+                Reload();
+                // _currentGun.Reload();
+            }
+            else if (Input.GetKeyDown(_jump))
+            {
+                EventQueueManager.instance.AddCommand(_cmdJump);
+                Jump();
+            }
+            else
+            {
+                Idle();
+            }
         }
 
 
@@ -158,35 +230,59 @@ public class Character : Actor
     private void Walk()
     {
         animator.SetBool("Idle", false);
-        animator.SetBool("Walk", true);
         animator.SetBool("Running", false);
         animator.SetBool("RifleWalk", false);
-        animator.SetBool("IdleAim", false);
+        animator.SetBool("Walk", true);
+        animator.ResetTrigger("Jump");
     }
 
     private void Idle()
     {
-        animator.SetBool("Idle", true);
         animator.SetBool("Walk", false);
         animator.SetBool("Running", false);
+        animator.SetBool("IdleAim", false);
+        animator.SetBool("Idle", true);
+        animator.ResetTrigger("Jump");
+        animator.SetBool("Reloading", false);
     }
 
     private void Sprint()
     {
+        animator.SetBool("Idle", false);
         animator.SetBool("Walk", false);
         animator.SetBool("Running", true);
+        animator.ResetTrigger("Jump");
     }
 
     private void Jump()
     {
         animator.SetBool("Idle", false);
         animator.SetBool("Walk", false);
+        animator.SetBool("Running", false);
         animator.SetTrigger("Jump");
     }
 
-    private void NoJump()
+    private void Aim()
     {
-        animator.SetBool("Idle", true);
-        animator.ResetTrigger("Jump");
+        animator.SetBool("Idle", false);
+        animator.SetBool("RifleWalk", false);
+        animator.SetBool("IdleAim", true);
+        animator.SetBool("Reloading", false);
+    }
+
+    private void AimWalk()
+    {
+        animator.SetBool("RifleWalk", true);
+        animator.SetBool("Walk", false);
+        animator.SetBool("IdleAim", false);
+        animator.SetBool("Reloading", false);
+        animator.SetBool("Idle", false);
+    }
+
+    private void Reload()
+    {
+        animator.SetBool("Reloading", true);
+        animator.SetBool("RifleWalk", false);
+        animator.SetBool("IdleAim", false);
     }
 }
