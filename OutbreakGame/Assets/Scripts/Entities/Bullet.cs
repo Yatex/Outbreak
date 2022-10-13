@@ -33,10 +33,8 @@ public class Bullet : MonoBehaviour, IBullet
         if(_layerTarget.Contains(collider.gameObject.layer)){
             IDamageable damageable = collider.GetComponent<IDamageable>();
             damageable?.TakeDamage(_gun.Damage);
-            Debug.Log("Action");
             Destroy(this.gameObject);
         }
-            Debug.Log("Action2");
         
     }
 
