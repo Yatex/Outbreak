@@ -68,6 +68,9 @@ public class Character : Actor
     {
         Cursor.lockState = CursorLockMode.Locked; //or Cursor.lockState = CursorLockMode.None;
 
+        //TODO: Luego habria que verificar si muere en el lifeController
+        if(Input.GetKey(KeyCode.Y)) EventsManager.instance.EventGameOver(false);
+        /*  *   *   *   *   *   *   *   *   *   */
         if (Input.GetKey(_moveForward))
         {
             EventQueueManager.instance.AddCommand(_cmdMoveForward);
