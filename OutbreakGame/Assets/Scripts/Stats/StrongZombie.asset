@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: StrongZombie
   m_EditorClassIdentifier: 
   _statValues:
-    MaxLife: 10
-    MovementSpeed: 1
+    MaxLife: 300
+    MovementSpeed: 0.4
     RotationSpeed: 1

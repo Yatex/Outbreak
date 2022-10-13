@@ -1,10 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 public class Character : Actor
 {
     private MovementController _movementController;
+    private GameObject camThirdPerson;
+    private GameObject camAim;
+
 
     [SerializeField] private List<Gun> _guns;
     [SerializeField] private Gun _currentGun;
@@ -52,6 +56,11 @@ public class Character : Actor
         _cmdRotateRight = new CmdRotation(_movementController, Vector3.right);
         _cmdAttack = new CmdAttack(_currentGun);
         _cmdJump = new CmdJump(_movementController, Vector3.up);
+        camThirdPerson = GameObject.Find("ThirdPersonCineMachine");
+        camThirdPerson.GetComponent<Cinemachine.CinemachineVirtualCamera>();
+        camAim = GameObject.Find("AimCineMachine");
+        camAim.GetComponent<Cinemachine.CinemachineVirtualCamera>();
+        camThirdPerson.SetActive(true);
     }
 
     // Update is called once per frame
@@ -72,24 +81,33 @@ public class Character : Actor
                 {
                     EventQueueManager.instance.AddCommand(_cmdJump);
                     Jump();
+                    //camThirdPerson.SetActive(true);
                 }
                 else
                 {
                     Sprint();
+                    //camThirdPerson.SetActive(true);
                 }
             }
             else if (Input.GetKey(_aim))
             {
                 AimWalk();
+                //camThirdPerson.SetActive(false);
+                if (Input.GetKeyDown(_attack))
+                {
+                    EventQueueManager.instance.AddCommand(_cmdAttack);
+                }
             }
             else if (Input.GetKeyDown(_jump))
             {
                 EventQueueManager.instance.AddCommand(_cmdJump);
                 Jump();
+                //camThirdPerson.SetActive(true);
             }
             else
             {
                 Walk();
+                //camThirdPerson.SetActive(true);
             }
 
         }
@@ -100,10 +118,16 @@ public class Character : Actor
             if (Input.GetKey(_aim))
             {
                 AimWalk();
+                if (Input.GetKeyDown(_attack))
+                {
+                    EventQueueManager.instance.AddCommand(_cmdAttack);
+                }
+                //camThirdPerson.SetActive(false);
             }
             else
             {
                 Walk();
+                //camThirdPerson.SetActive(true);
             }
         }
         
@@ -119,19 +143,27 @@ public class Character : Actor
                 {
                     EventQueueManager.instance.AddCommand(_cmdJump);
                     Jump();
+                    //camThirdPerson.SetActive(true);
                 }
                 else
                 {
                     Sprint();
+                    //camThirdPerson.SetActive(true);
                 }
             }
             else if (Input.GetKey(_aim))
             {
                 AimWalk();
+                if (Input.GetKeyDown(_attack))
+                {
+                    EventQueueManager.instance.AddCommand(_cmdAttack);
+                }
+                //camThirdPerson.SetActive(false);
             }
             else
             {
                 Walk();
+                //camThirdPerson.SetActive(true);
             }
         }
         
@@ -145,25 +177,28 @@ public class Character : Actor
                 {
                     EventQueueManager.instance.AddCommand(_cmdJump);
                     Jump();
+                    //camThirdPerson.SetActive(true);
                 }
                 else
                 {
                     Sprint();
+                    //camThirdPerson.SetActive(true);
                 }
             }
             else if (Input.GetKey(_aim))
             {
                 AimWalk();
+                if (Input.GetKeyDown(_attack))
+                {
+                    EventQueueManager.instance.AddCommand(_cmdAttack);
+                }
+                //camThirdPerson.SetActive(false);
             }
             else
             {
                 Walk();
+                //camThirdPerson.SetActive(true);
             }
-        }
-       
-        if(Input.GetKeyDown(_attack))
-        {
-            EventQueueManager.instance.AddCommand(_cmdAttack);
         }
        
 
@@ -191,29 +226,35 @@ public class Character : Actor
         {
             if (Input.GetKey(_aim))
             {
+                //camThirdPerson.SetActive(false);
                 if (Input.GetKey(_reload))
                 {
                     Reload();
-                    // _currentGun.Reload();
                 }
                 else
                 {
                     Aim();
+                    if (Input.GetKeyDown(_attack))
+                    {
+                        EventQueueManager.instance.AddCommand(_cmdAttack);
+                    }
                 }
             }
             else if (Input.GetKey(_reload))
             {
                 Reload();
-                // _currentGun.Reload();
+                //camThirdPerson.SetActive(true);
             }
             else if (Input.GetKeyDown(_jump))
             {
                 EventQueueManager.instance.AddCommand(_cmdJump);
                 Jump();
+                //camThirdPerson.SetActive(true);
             }
             else
             {
                 Idle();
+                //camThirdPerson.SetActive(true);
             }
         }
 
@@ -262,7 +303,7 @@ public class Character : Actor
         animator.SetBool("Idle", false);
         animator.SetBool("Walk", false);
         animator.SetBool("Running", false);
-        animator.SetTrigger("Jump");
+        // animator.SetTrigger("Jump");
     }
 
     private void Aim()

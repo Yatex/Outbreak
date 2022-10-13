@@ -12,7 +12,7 @@ public class MovementController : MonoBehaviour, IMoveable
 
     public void Sprint(Vector3 direction) => transform.Translate(direction * Time.deltaTime * Speed * 2);
 
-    public void Jump(Vector3 direction) => direction.y = 15f;
+    public void Jump(Vector3 direction) => transform.Translate(direction * Time.deltaTime * Speed * 100);
 
     public void Rotate(Vector3 direction) => transform.rotation = Quaternion.Euler(0, targetCam.rotation.eulerAngles.y, 0);
     //transform.Rotate(direction * Time.deltaTime * RotationSpeed);
