@@ -15,7 +15,7 @@ public class Bullet : MonoBehaviour, IBullet
     public Gun Gun => _gun;
     [SerializeField] private Gun _gun;
 
-    public void Travel() => transform.Translate(Vector3.forward);
+    public void Travel() => transform.Translate(-Vector3.forward);
 
     public void SetOwner(Gun gun) => _owner = gun;
     [SerializeField] private Gun _owner;
