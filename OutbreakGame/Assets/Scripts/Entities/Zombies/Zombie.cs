@@ -17,38 +17,49 @@ public abstract class Zombie : Actor
     }
 
     void Update(){
-        var characters = Object.FindObjectsOfType<Character>();
-        double minDistance = Mathf.Infinity;
-        Character target = null;
-        foreach (var c in characters)
+        if (lifeController.CurrentLife > 0.0)
         {
-            var posibleTarget = c.transform.position;
-            if (minDistance > Vector3.Distance(transform.position,posibleTarget))
+            var characters = Object.FindObjectsOfType<Character>();
+            double minDistance = Mathf.Infinity;
+            Character target = null;
+            foreach (var c in characters)
             {
-                target = c;
-            }
-        }
-        if (target != null)
-        {
-            var targetPosition = target.transform.position;
-            if (Vector3.Distance(transform.position,  targetPosition) > ZombieStats.HitRadius)
-            {
-                animator.SetBool("isPunching", false);
-                animator.SetBool("isWalking", true);
-                EventQueueManager.instance.AddCommand(new CmdMovement(
-                    zombieController, 
-                    targetPosition,
-                    targetPosition
-                ));
-            } else {
-                if (timeSinceAttack + ZombieStats.TimeBetweenAttacks < Time.time)
+                var posibleTarget = c.transform.position;
+                if (minDistance > Vector3.Distance(transform.position, posibleTarget))
                 {
-                    animator.SetBool("isWalking", false);
-                    animator.SetBool("isPunching", true);
-                    EventQueueManager.instance.AddCommand(new CmdDamage(zombieController, target.GetComponent<IDamageable>()));
-                    timeSinceAttack = Time.time;
+                    target = c;
                 }
             }
+            if (target != null)
+            {
+                var targetPosition = target.transform.position;
+                if (Vector3.Distance(transform.position, targetPosition) > ZombieStats.HitRadius)
+                {
+                    animator.SetBool("isPunching", false);
+                    animator.SetBool("isWalking", true);
+                    EventQueueManager.instance.AddCommand(new CmdMovement(
+                        zombieController,
+                        targetPosition,
+                        targetPosition
+                    ));
+                }
+                else
+                {
+                    if (timeSinceAttack + ZombieStats.TimeBetweenAttacks < Time.time)
+                    {
+                        animator.SetBool("isWalking", false);
+                        animator.SetBool("isPunching", true);
+                        EventQueueManager.instance.AddCommand(new CmdDamage(zombieController, target.GetComponent<IDamageable>()));
+                        timeSinceAttack = Time.time;
+                    }
+                }
+            }
+        }
+        else
+        {
+            animator.SetBool("isWalking", false);
+            animator.SetBool("isPunching", false);
+            animator.SetBool("died", true);
         }
     }
 }

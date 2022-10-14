@@ -136,7 +136,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: deff798729bece7438dc93dd1e375a13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _lifeTime: 50
+  _lifeTime: 5
   _speed: 2
   _gun: {fileID: -7458552833428157882, guid: 67f716418f7ba2146a845739c7782755, type: 3}
   _owner: {fileID: -7458552833428157882, guid: 67f716418f7ba2146a845739c7782755, type: 3}

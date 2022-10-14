@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _statValues:
     HitRadius: 1.5
-    Damage: 5
+    Damage: 40
     TimeBetweenAttacks: 3
