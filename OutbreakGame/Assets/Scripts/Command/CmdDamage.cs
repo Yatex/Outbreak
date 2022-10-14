@@ -1,11 +1,11 @@
 class CmdDamage : ICommand
 {
-    private float _damage;
     private IDamageable _damageable;
+    private IDamager _damager;
 
-    public CmdDamage(IDamageable damageable ,float damage){
-        _damage = damage;
+    public CmdDamage(IDamager damager, IDamageable damageable){
+        _damager = damager;
         _damageable = damageable;
     }
-    public void Execute()=> _damageable.TakeDamage(_damage);
+    public void Execute() => _damager.DealDamage(_damageable);
 }

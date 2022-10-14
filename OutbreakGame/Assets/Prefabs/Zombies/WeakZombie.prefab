@@ -66,8 +66,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _actorStats: {fileID: 11400000, guid: 7a06648b4bd406244b9440bf53627f68, type: 2}
-  hitRadius: 1
-  damage: 1
+  _zombieStats: {fileID: 11400000, guid: 374269e633b7949428f7eb612bcd2739, type: 2}
 --- !u!114 &6134535244290860826
 MonoBehaviour:
   m_ObjectHideFlags: 0

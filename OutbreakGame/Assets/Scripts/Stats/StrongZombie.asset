@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 88a277ea84d30584f9f53eba6f02e79f, type: 3}
+  m_Script: {fileID: 11500000, guid: 9426995d9c189b54e845ade6990a679c, type: 3}
   m_Name: StrongZombie
   m_EditorClassIdentifier: 
   _statValues:
-    MaxLife: 300
-    MovementSpeed: 0.4
-    RotationSpeed: 1
+    HitRadius: 1.5
+    Damage: 5
+    TimeBetweenAttacks: 3

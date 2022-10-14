@@ -2,18 +2,18 @@ using UnityEngine;
 
 public abstract class Zombie : Actor
 {
-    // TODO: change this
-    public float hitRadius = 1f;
-    public float damage = 1f;
+    public ZombieStats ZombieStats => _zombieStats;
+    [SerializeField] private ZombieStats _zombieStats;
     private LifeController lifeController;
-    private ZombieController movementController;
+    private ZombieController zombieController;
+    private float timeSinceAttack = 0;
 
     private Animator animator => GetComponent<Animator>();
 
 
     void Start(){
         lifeController = GetComponent<LifeController>();
-        movementController = GetComponent<ZombieController>();
+        zombieController = GetComponent<ZombieController>();
     }
 
     void Update(){
@@ -31,19 +31,23 @@ public abstract class Zombie : Actor
         if (target != null)
         {
             var targetPosition = target.transform.position;
-            if (Vector3.Distance(transform.position,  targetPosition) > hitRadius)
+            if (Vector3.Distance(transform.position,  targetPosition) > ZombieStats.HitRadius)
             {
                 animator.SetBool("isPunching", false);
                 animator.SetBool("isWalking", true);
                 EventQueueManager.instance.AddCommand(new CmdMovement(
-                    movementController, 
+                    zombieController, 
                     targetPosition,
                     targetPosition
                 ));
             } else {
-                animator.SetBool("isWalking", false);
-                animator.SetBool("isPunching", true);
-                EventQueueManager.instance.AddCommand(new CmdDamage(target.GetComponent<IDamageable>(), damage));
+                if (timeSinceAttack + ZombieStats.TimeBetweenAttacks < Time.time)
+                {
+                    animator.SetBool("isWalking", false);
+                    animator.SetBool("isPunching", true);
+                    EventQueueManager.instance.AddCommand(new CmdDamage(zombieController, target.GetComponent<IDamageable>()));
+                    timeSinceAttack = Time.time;
+                }
             }
         }
     }
