@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: WeakZombieActor
   m_EditorClassIdentifier: 
   _statValues:
-    MaxLife: 100
+    MaxLife: 50
     MovementSpeed: 0.4
+    JumpSpeed: 0
     RotationSpeed: 1

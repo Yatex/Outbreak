@@ -337,7 +337,7 @@ public class Character : Actor
         animator.SetBool("Idle", false);
         animator.SetBool("Walk", false);
         animator.SetBool("Running", false);
-        // animator.SetTrigger("Jump");
+        animator.SetTrigger("Jump");
     }
 
     private void Aim()
