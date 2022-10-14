@@ -15,6 +15,7 @@ public class LifeController : MonoBehaviour, IDamageable
     }
 
     public void TakeDamage(float damage) {
+        Debug.Log("toy re duro");
         _currentLife -= damage;
         if(_currentLife <=0) Die();
     }

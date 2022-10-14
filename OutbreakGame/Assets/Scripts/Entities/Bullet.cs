@@ -10,7 +10,7 @@ public class Bullet : MonoBehaviour, IBullet
     [SerializeField] private float _lifeTime = 5;
 
     public float Speed => _speed;
-    [SerializeField] private float _speed = 7;
+    [SerializeField] private float _speed = 0.1f;
     
     public Gun Gun => _gun;
     [SerializeField] private Gun _gun;
@@ -34,8 +34,7 @@ public class Bullet : MonoBehaviour, IBullet
             IDamageable damageable = collider.GetComponent<IDamageable>();
             damageable?.TakeDamage(_gun.Damage);
             Destroy(this.gameObject);
-        }
-        
+        }  
     }
 
     private void Start(){
@@ -48,8 +47,6 @@ public class Bullet : MonoBehaviour, IBullet
         _rigigbody.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
         _layerTarget.Add(6);
         _layerTarget.Add(8);
-
-
     }
 
     private void Update(){
@@ -57,7 +54,4 @@ public class Bullet : MonoBehaviour, IBullet
         if(_lifeTime <= 0) Destroy(this.gameObject);
         Travel();
     }
-
-    
-
 }

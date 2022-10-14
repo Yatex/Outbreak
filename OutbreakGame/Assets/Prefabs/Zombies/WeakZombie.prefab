@@ -9,12 +9,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3121339798283014120}
-  - component: {fileID: 488765999640842022}
   - component: {fileID: 4866645425421855522}
   - component: {fileID: 3103700052476138694}
   - component: {fileID: 6134535244290860826}
   - component: {fileID: 8454353895946181602}
   - component: {fileID: 8178695833385304816}
+  - component: {fileID: 8206468015145481119}
   m_Layer: 0
   m_Name: WeakZombie
   m_TagString: Untagged
@@ -37,19 +37,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &488765999640842022
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5289189006155110589}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 2, z: 1}
-  m_Center: {x: 0, y: 1, z: 0}
 --- !u!54 &4866645425421855522
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -124,6 +111,20 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!136 &8206468015145481119
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5289189006155110589}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.23
+  m_Height: 2.04
+  m_Direction: 1
+  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1001 &5917489984116214418
 PrefabInstance:
   m_ObjectHideFlags: 0

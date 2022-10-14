@@ -9,7 +9,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1000011023395326, guid: 2ce15a1900ef14a459f78260cd05a3dc, type: 3}
       propertyPath: m_Name
-      value: Bullet Variant
+      value: Bullet Akm
       objectReference: {fileID: 0}
     - target: {fileID: 4000012716797116, guid: 2ce15a1900ef14a459f78260cd05a3dc, type: 3}
       propertyPath: m_RootOrder
@@ -67,6 +67,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -9.822
       objectReference: {fileID: 0}
+    - target: {fileID: 4000013346800150, guid: 2ce15a1900ef14a459f78260cd05a3dc, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000013346800150, guid: 2ce15a1900ef14a459f78260cd05a3dc, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000013346800150, guid: 2ce15a1900ef14a459f78260cd05a3dc, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000013346800150, guid: 2ce15a1900ef14a459f78260cd05a3dc, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000013346800150, guid: 2ce15a1900ef14a459f78260cd05a3dc, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -90
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2ce15a1900ef14a459f78260cd05a3dc, type: 3}
 --- !u!1 &3866601667060038007 stripped
@@ -98,12 +118,12 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3866601667060038007}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 0.026897248
-  m_Height: 0.69222546
-  m_Direction: 1
-  m_Center: {x: 0.00000092583747, y: 0.2612258, z: -0.00093357643}
+  m_Radius: 0.04
+  m_Height: 0.62
+  m_Direction: 2
+  m_Center: {x: 0, y: 0, z: -0.3}
 --- !u!114 &148405480
 MonoBehaviour:
   m_ObjectHideFlags: 0
