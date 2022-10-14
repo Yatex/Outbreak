@@ -299,7 +299,9 @@ public class Character : Actor
             gun.gameObject.SetActive(false);
             _currentGun = _guns[index];
             _currentGun.gameObject.SetActive(true);
+            _currentGun.Reload();
             _cmdAttack = new CmdAttack(_currentGun);
+
         }
     }
 

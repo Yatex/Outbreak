@@ -25,12 +25,20 @@ public class Gun : MonoBehaviour, IGun
             bullet.name = "Bullet";
             bullet.GetComponent<Bullet>().SetOwner(this);
             _bulletCount--;
+            UI_AmmoUpdater();
         }
         
     }
 
-    public void Reload() => _bulletCount = MagSize;
+    public void Reload(){
+        _bulletCount = MagSize;
+        UI_AmmoUpdater();
+    } 
 
+    public void UI_AmmoUpdater()
+    {
+        EventsManager.instance.AmmoChange(_bulletCount, _stats.MagSize);
+    }
     public void EmptyMagazine()
     {
         _bulletCount = 0;
