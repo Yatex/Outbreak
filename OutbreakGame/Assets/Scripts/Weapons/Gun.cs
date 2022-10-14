@@ -18,9 +18,14 @@ public class Gun : MonoBehaviour, IGun
     }
 
     public virtual void Attack(){
-        var bullet = Instantiate(BulletPrefab, transform.position, transform.rotation);
-        bullet.name = "Bullet";
-        bullet.GetComponent<Bullet>().SetOwner(this);
+        if(_bulletCount > 0)
+        {
+            var bullet = Instantiate(BulletPrefab, transform.position, transform.rotation);
+            bullet.name = "Bullet";
+            bullet.GetComponent<Bullet>().SetOwner(this);
+            _bulletCount--;
+        }
+        
     }
 
     public void Reload() => _bulletCount = MagSize;

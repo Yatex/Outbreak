@@ -8,6 +8,8 @@ public interface IGun
     int MagSize { get; }
     int BulletCount { get; }
 
+    int Damage { get; }
+
     void Attack();
     void Reload();
     

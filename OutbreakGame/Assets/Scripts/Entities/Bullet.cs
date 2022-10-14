@@ -31,7 +31,7 @@ public class Bullet : MonoBehaviour, IBullet
     public void OnTriggerEnter(Collider collider){
         if(_layerTarget.Contains(collider.gameObject.layer)){
             IDamageable damageable = collider.GetComponent<IDamageable>();
-            damageable?.TakeDamage(30);
+            damageable?.TakeDamage(_gun.Damage);
             Destroy(this.gameObject);
         }  
     }

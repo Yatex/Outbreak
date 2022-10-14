@@ -138,8 +138,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _lifeTime: 50
   _speed: 2
-  _gun: {fileID: 0}
-  _owner: {fileID: 0}
+  _gun: {fileID: -7458552833428157882, guid: 67f716418f7ba2146a845739c7782755, type: 3}
+  _owner: {fileID: -7458552833428157882, guid: 67f716418f7ba2146a845739c7782755, type: 3}
   _rigigbody: {fileID: 148405481}
   _collider: {fileID: 148405478}
   _layerTarget: 03000000

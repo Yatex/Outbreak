@@ -230,6 +230,7 @@ public class Character : Actor
                 if (Input.GetKey(_reload))
                 {
                     Reload();
+                    _currentGun.Reload();
                 }
                 else
                 {
@@ -243,6 +244,7 @@ public class Character : Actor
             else if (Input.GetKey(_reload))
             {
                 Reload();
+                _currentGun.Reload();
                 //camThirdPerson.SetActive(true);
             }
             else if (Input.GetKeyDown(_jump))
