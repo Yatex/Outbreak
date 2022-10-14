@@ -11,7 +11,7 @@ public class ZombieController : MonoBehaviour, IMoveable, IDamager
     #endregion
     public void Travel(Vector3 target) => MoveAtSpeed(target, Speed);
     public void Sprint(Vector3 target) => MoveAtSpeed(target, Speed * 1.5f);
-
+    public void Jump(Vector3 target) => MoveAtSpeed(target, Speed);
     public void Rotate(Vector3 target) => transform.LookAt(target);
 
     public void DealDamage(IDamageable damageable) => damageable.TakeDamage(Damage);

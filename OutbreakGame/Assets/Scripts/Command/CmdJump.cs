@@ -15,5 +15,5 @@ public class CmdJump : ICommand
         _direction = direction;
     }
 
-    public void Execute() => _moveable.Travel(_direction);
+    public void Execute() => _moveable.Jump(_direction);
 }
