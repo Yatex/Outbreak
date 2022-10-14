@@ -29,10 +29,9 @@ public class Bullet : MonoBehaviour, IBullet
     [SerializeField] private List<int> _layerTarget;
 
     public void OnTriggerEnter(Collider collider){
-        Debug.Log(_layerTarget.Count);
         if(_layerTarget.Contains(collider.gameObject.layer)){
             IDamageable damageable = collider.GetComponent<IDamageable>();
-            damageable?.TakeDamage(_gun.Damage);
+            damageable?.TakeDamage(30);
             Destroy(this.gameObject);
         }  
     }
@@ -45,8 +44,6 @@ public class Bullet : MonoBehaviour, IBullet
         _rigigbody.useGravity = false;
         _rigigbody.isKinematic = true;
         _rigigbody.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
-        _layerTarget.Add(6);
-        _layerTarget.Add(8);
     }
 
     private void Update(){

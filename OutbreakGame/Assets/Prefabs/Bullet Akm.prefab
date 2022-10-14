@@ -17,15 +17,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4000012716797116, guid: 2ce15a1900ef14a459f78260cd05a3dc, type: 3}
       propertyPath: m_LocalScale.x
-      value: 4
+      value: 0.72
       objectReference: {fileID: 0}
     - target: {fileID: 4000012716797116, guid: 2ce15a1900ef14a459f78260cd05a3dc, type: 3}
       propertyPath: m_LocalScale.y
-      value: 3
+      value: 0.54
       objectReference: {fileID: 0}
     - target: {fileID: 4000012716797116, guid: 2ce15a1900ef14a459f78260cd05a3dc, type: 3}
       propertyPath: m_LocalScale.z
-      value: 6
+      value: 1.08
       objectReference: {fileID: 0}
     - target: {fileID: 4000012716797116, guid: 2ce15a1900ef14a459f78260cd05a3dc, type: 3}
       propertyPath: m_LocalPosition.x
@@ -142,4 +142,4 @@ MonoBehaviour:
   _owner: {fileID: 0}
   _rigigbody: {fileID: 148405481}
   _collider: {fileID: 148405478}
-  _layerTarget: 
+  _layerTarget: 03000000
