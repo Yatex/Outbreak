@@ -9,6 +9,8 @@ public class Character : Actor
     private GameObject camThirdPerson;
     private GameObject camAim;
     private LifeController lifeController;
+    private CapsuleCollider capsuleCollider;
+    private Rigidbody rigidBody;
 
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip rifle_shot;
@@ -42,7 +44,6 @@ public class Character : Actor
     private CmdMovement _cmdMoveLeft;
     private CmdMovement _cmdMoveRight;
     private CmdSprint _cmdSprintForward;
-    private CmdJump _cmdJump;
     private CmdRotation _cmdRotateLeft;
     private CmdRotation _cmdRotateRight;
     private CmdAttack _cmdAttack;
@@ -61,13 +62,14 @@ public class Character : Actor
         _cmdRotateLeft = new CmdRotation(_movementController, Vector3.left);
         _cmdRotateRight = new CmdRotation(_movementController, Vector3.right);
         _cmdAttack = new CmdAttack(_currentGun);
-        _cmdJump = new CmdJump(_movementController, Vector3.up);
         camThirdPerson = GameObject.Find("ThirdPersonCineMachine");
         camThirdPerson.GetComponent<Cinemachine.CinemachineVirtualCamera>();
         camAim = GameObject.Find("AimCineMachine");
         camAim.GetComponent<Cinemachine.CinemachineVirtualCamera>();
         camThirdPerson.SetActive(true);
         lifeController = GetComponent<LifeController>();
+        capsuleCollider = GetComponent<CapsuleCollider>();
+        rigidBody = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -88,7 +90,6 @@ public class Character : Actor
                     EventQueueManager.instance.AddCommand(_cmdSprintForward);
                     if (Input.GetKeyDown(_jump))
                     {
-                        EventQueueManager.instance.AddCommand(_cmdJump);
                         Jump();
                         //camThirdPerson.SetActive(true);
                     }
@@ -110,7 +111,6 @@ public class Character : Actor
                 }
                 else if (Input.GetKeyDown(_jump))
                 {
-                    EventQueueManager.instance.AddCommand(_cmdJump);
                     Jump();
                     //camThirdPerson.SetActive(true);
                 }
@@ -152,7 +152,6 @@ public class Character : Actor
                 {
                     if (Input.GetKeyDown(_jump))
                     {
-                        EventQueueManager.instance.AddCommand(_cmdJump);
                         Jump();
                         //camThirdPerson.SetActive(true);
                     }
@@ -187,7 +186,6 @@ public class Character : Actor
                 {
                     if (Input.GetKeyDown(_jump))
                     {
-                        EventQueueManager.instance.AddCommand(_cmdJump);
                         Jump();
                         //camThirdPerson.SetActive(true);
                     }
@@ -261,7 +259,6 @@ public class Character : Actor
                 }
                 else if (Input.GetKeyDown(_jump))
                 {
-                    EventQueueManager.instance.AddCommand(_cmdJump);
                     Jump();
                     //camThirdPerson.SetActive(true);
                 }
@@ -334,10 +331,20 @@ public class Character : Actor
 
     private void Jump()
     {
+
         animator.SetBool("Idle", false);
         animator.SetBool("Walk", false);
         animator.SetBool("Running", false);
         animator.SetTrigger("Jump");
+        capsuleCollider.height = 0.9f;
+        rigidBody.useGravity = false;
+        Invoke("reSizeCollider", 0.5f);
+    }
+
+    private void reSizeCollider()
+    {
+        capsuleCollider.height = 1.8f;
+        rigidBody.useGravity = true;
     }
 
     private void Aim()

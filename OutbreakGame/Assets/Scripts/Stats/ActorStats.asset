@@ -15,5 +15,5 @@ MonoBehaviour:
   _statValues:
     MaxLife: 100
     MovementSpeed: 3
-    JumpSpeed: 2
+    JumpSpeed: 0
     RotationSpeed: 2

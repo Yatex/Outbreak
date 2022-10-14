@@ -10,5 +10,4 @@ public interface IMoveable
     void Travel(Vector3 direction);
     void Rotate(Vector3 direction);
     void Sprint(Vector3 direction);
-    void Jump(Vector3 direction);
 }

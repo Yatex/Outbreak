@@ -9,7 +9,6 @@ public class ActorStats : ScriptableObject
 
     public int MaxLife => _statValues.MaxLife;
     public float MovementSpeed => _statValues.MovementSpeed;
-    public float JumpSpeed => _statValues.JumpSpeed;
     public float RotationSpeed => _statValues.RotationSpeed;
 
 }
