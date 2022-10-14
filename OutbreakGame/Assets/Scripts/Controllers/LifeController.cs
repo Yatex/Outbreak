@@ -9,6 +9,8 @@ public class LifeController : MonoBehaviour, IDamageable
 
     private float _currentLife;
 
+    public float CurrentLife;
+
 
     public void Start(){
         _currentLife = MaxLife;
@@ -25,7 +27,10 @@ public class LifeController : MonoBehaviour, IDamageable
         if(_currentLife <=0) Die();
     }
 
-    public void Die() => Destroy(this.gameObject);
+    public void Die()
+    {
+        Destroy(this.gameObject);
+    }
 
     private void OnDestroy()
     {

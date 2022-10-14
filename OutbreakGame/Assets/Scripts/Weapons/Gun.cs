@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -38,5 +39,8 @@ public class Gun : MonoBehaviour, IGun
         EventsManager.instance.AmmoChange(_bulletCount, _stats.MagSize);
     }
 
-
+    public void EmptyMagazine()
+    {
+        _bulletCount = 0;
+    }
 }
