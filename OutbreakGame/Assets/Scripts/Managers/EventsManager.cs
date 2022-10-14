@@ -24,9 +24,15 @@ public class EventsManager : MonoBehaviour
 
     #region UI_EVENTS
     public event Action<int,int> OnAmmoChange;
+    public event Action<float, float> OnCharacterLifeChange;
     public void AmmoChange(int currentAmmo, int maxAmmo){
         if(OnAmmoChange != null) OnAmmoChange(currentAmmo, maxAmmo);
     }
+
+    public void CharacterLifeChange(float currentLife, float maxLife){
+        if(OnCharacterLifeChange != null) OnCharacterLifeChange(currentLife, maxLife);
+    }
+
     #endregion
 
 

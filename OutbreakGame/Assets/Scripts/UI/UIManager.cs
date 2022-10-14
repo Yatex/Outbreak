@@ -10,16 +10,14 @@ public class UIManager : MonoBehaviour
 
     private void Start(){
         EventsManager.instance.OnAmmoChange += OnAmmoChange;
-       // EventsManager.instance.OnCharacterLifeChange += OnCharacterLifeChange;
+        EventsManager.instance.OnCharacterLifeChange += OnCharacterLifeChange;
     }
 
     private void OnAmmoChange(int currentAmmo, int maxAmmo){
         _ammo.text = $"{currentAmmo}/{maxAmmo}";
     }
-   /*
     private void OnCharacterLifeChange(float currentLife, float maxLife){
         _lifebar.fillAmount = currentLife/maxLife;
         
     }
-    */
 }
