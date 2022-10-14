@@ -23,6 +23,9 @@ public class LifeController : MonoBehaviour, IDamageable
 
     private void OnDestroy()
     {
-        EventsManager.instance.EventGameOver(false);
+        if (GetComponent<Actor>() is Character)
+        {
+            EventsManager.instance.EventGameOver(false);
+        }
     }
 }
