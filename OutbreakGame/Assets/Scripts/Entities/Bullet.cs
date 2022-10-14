@@ -15,6 +15,9 @@ public class Bullet : MonoBehaviour, IBullet
     public Gun Gun => _gun;
     [SerializeField] private Gun _gun;
 
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip bulletHit;
+
     public void Travel() => transform.Translate(-Vector3.forward);
 
     public void SetOwner(Gun gun) => _owner = gun;
@@ -32,6 +35,8 @@ public class Bullet : MonoBehaviour, IBullet
         if(_layerTarget.Contains(collider.gameObject.layer)){
             IDamageable damageable = collider.GetComponent<IDamageable>();
             damageable?.TakeDamage(_gun.Damage);
+            audioSource.clip = bulletHit;
+            audioSource.Play();
             Destroy(this.gameObject);
         }  
     }
