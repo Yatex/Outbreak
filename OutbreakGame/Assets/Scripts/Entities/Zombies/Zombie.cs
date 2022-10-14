@@ -9,6 +9,7 @@ public abstract class Zombie : Actor
     private float timeSinceAttack = 0;
 
     private Animator animator => GetComponent<Animator>();
+    private Character target;
 
 
     void Start(){
@@ -21,7 +22,7 @@ public abstract class Zombie : Actor
         {
             var characters = Object.FindObjectsOfType<Character>();
             double minDistance = Mathf.Infinity;
-            Character target = null;
+            target = null;
             foreach (var c in characters)
             {
                 var posibleTarget = c.transform.position;
@@ -45,11 +46,11 @@ public abstract class Zombie : Actor
                 }
                 else
                 {
-                    if (timeSinceAttack + ZombieStats.TimeBetweenAttacks < Time.time)
+                    if (timeSinceAttack + ZombieStats.TimeBetweenAttacks + 1 < Time.time)
                     {
                         animator.SetBool("isWalking", false);
                         animator.SetBool("isPunching", true);
-                        EventQueueManager.instance.AddCommand(new CmdDamage(zombieController, target.GetComponent<IDamageable>()));
+                        Invoke("ZombieDealDamage", 2);
                         timeSinceAttack = Time.time;
                     }
                 }
@@ -61,5 +62,10 @@ public abstract class Zombie : Actor
             animator.SetBool("isPunching", false);
             animator.SetBool("died", true);
         }
+    }
+
+    private void ZombieDealDamage()
+    {
+        EventQueueManager.instance.AddCommand(new CmdDamage(zombieController, target.GetComponent<IDamageable>()));
     }
 }

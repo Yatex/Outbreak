@@ -33,7 +33,10 @@ public class LifeController : MonoBehaviour, IDamageable
     {
         if (GetComponent<Actor>() is Character)
         {
-            EventsManager.instance.EventGameOver(false);
+            if (EventsManager.instance != null)
+            {
+                EventsManager.instance.EventGameOver(false);
+            }
         }
     }
 }
