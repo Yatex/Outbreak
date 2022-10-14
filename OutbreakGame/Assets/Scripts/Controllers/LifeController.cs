@@ -12,10 +12,16 @@ public class LifeController : MonoBehaviour, IDamageable
 
     public void Start(){
         _currentLife = MaxLife;
+        if(name == "Soldier"){
+            EventsManager.instance.CharacterLifeChange(_currentLife, MaxLife);
+        }
     }
 
     public void TakeDamage(float damage) {
         _currentLife -= damage;
+        if(name == "Soldier"){
+            EventsManager.instance.CharacterLifeChange(_currentLife, MaxLife);
+        }
         if(_currentLife <=0) Die();
     }
 
