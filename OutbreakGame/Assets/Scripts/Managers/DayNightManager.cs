@@ -2,14 +2,11 @@ using UnityEngine;
 
 class DayNightManager : MonoBehaviour
 {
-    public float CycleSpeed = 1f;
-    private float TimeOfDay = 12;
+    [SerializeField] private float CycleSpeed = 1f;
+    [SerializeField] private float TimeOfDay = 12;
 
+    [SerializeField] private DayNightPresets Presets;
 
-    public float MinExposure = 0.25f;
-    public float MaxExposure = 0.5f;
-
-    private Light Sun;
     static private DayNightManager Instance;
     
     private void Awake()
@@ -19,27 +16,29 @@ class DayNightManager : MonoBehaviour
     }
 
     void Start(){
-        var lights = FindObjectsOfType<Light>();
-        foreach (var l in lights)
+        if (RenderSettings.sun == null)
         {
-            if (l.type  == LightType.Directional)
+            var lights = FindObjectsOfType<Light>();
+            foreach (var l in lights)
             {
-                this.Sun = l;
-                break;
+                if (l.type  == LightType.Directional)
+                {
+                    RenderSettings.sun = l;
+                    break;
+                }
             }
         }
     }
 
     void Update(){
-        TimeOfDay += CycleSpeed * Time.deltaTime;
-        TimeOfDay = TimeOfDay % 24;
-        if (this.Sun != null)
-        {
-            this.Sun.transform.rotation = Quaternion.Euler(90 * (1 + (TimeOfDay - 12) / 12),0,0);
+        TimeOfDay += Time.deltaTime * CycleSpeed;
+        TimeOfDay %= 24;
+        var dayPercent = TimeOfDay / 24f;
 
-            var percentageToDayPeek = 1 - Mathf.Abs(TimeOfDay - 12) / 12;
-            var exposure = percentageToDayPeek * (MaxExposure - MinExposure) + MinExposure;
-            RenderSettings.skybox.SetFloat("_Exposure",  exposure);
-        }
+        RenderSettings.skybox.SetColor("_Tint",  Presets.TintColor.Evaluate(dayPercent));
+        RenderSettings.ambientLight = Presets.FogColor.Evaluate(dayPercent);
+        RenderSettings.fogColor = Presets.AmbientColor.Evaluate(dayPercent);
+        RenderSettings.sun.color = Presets.DirectionalColor.Evaluate(dayPercent);
+        RenderSettings.sun.transform.rotation = Quaternion.Euler((360 * dayPercent) - 90, 0, 0);
     }
 }
