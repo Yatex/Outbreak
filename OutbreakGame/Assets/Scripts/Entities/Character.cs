@@ -11,6 +11,8 @@ public class Character : Actor
     private LifeController lifeController;
     private CapsuleCollider capsuleCollider;
     private Rigidbody rigidBody;
+    public float nextTimeToShoot = 0f;
+    public float fireCharge = 15f;
 
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip rifle_shot;
@@ -103,10 +105,11 @@ public class Character : Actor
                 {
                     AimWalk();
                     //camThirdPerson.SetActive(false);
-                    if (Input.GetKeyDown(_attack))
+                    if (Input.GetKey(_attack) && Time.time >= nextTimeToShoot)
                     {
-                        EventQueueManager.instance.AddCommand(_cmdAttack);
                         ShootAudio();
+                        nextTimeToShoot = Time.time + 1.6f / fireCharge;
+                        EventQueueManager.instance.AddCommand(_cmdAttack);
                     }
                 }
                 else if (Input.GetKeyDown(_jump))
@@ -128,10 +131,11 @@ public class Character : Actor
                 if (Input.GetKey(_aim))
                 {
                     AimWalk();
-                    if (Input.GetKeyDown(_attack))
+                    if (Input.GetKey(_attack) && Time.time >= nextTimeToShoot)
                     {
-                        EventQueueManager.instance.AddCommand(_cmdAttack);
                         ShootAudio();
+                        nextTimeToShoot = Time.time + 1.6f / fireCharge;
+                        EventQueueManager.instance.AddCommand(_cmdAttack);
                     }
                     //camThirdPerson.SetActive(false);
                 }
@@ -164,10 +168,11 @@ public class Character : Actor
                 else if (Input.GetKey(_aim))
                 {
                     AimWalk();
-                    if (Input.GetKeyDown(_attack))
+                    if (Input.GetKey(_attack) && Time.time >= nextTimeToShoot)
                     {
-                        EventQueueManager.instance.AddCommand(_cmdAttack);
                         ShootAudio();
+                        nextTimeToShoot = Time.time + 1.6f / fireCharge;
+                        EventQueueManager.instance.AddCommand(_cmdAttack);
                     }
                     //camThirdPerson.SetActive(false);
                 }
@@ -198,10 +203,11 @@ public class Character : Actor
                 else if (Input.GetKey(_aim))
                 {
                     AimWalk();
-                    if (Input.GetKeyDown(_attack))
+                    if (Input.GetKey(_attack) && Time.time >= nextTimeToShoot)
                     {
-                        EventQueueManager.instance.AddCommand(_cmdAttack);
                         ShootAudio();
+                        nextTimeToShoot = Time.time + 1.6f / fireCharge;
+                        EventQueueManager.instance.AddCommand(_cmdAttack);
                     }
                     //camThirdPerson.SetActive(false);
                 }
@@ -245,10 +251,11 @@ public class Character : Actor
                     else
                     {
                         Aim();
-                        if (Input.GetKeyDown(_attack))
+                        if (Input.GetKey(_attack) && Time.time >= nextTimeToShoot)
                         {
-                            EventQueueManager.instance.AddCommand(_cmdAttack);
                             ShootAudio();
+                            nextTimeToShoot = Time.time + 1.6f / fireCharge;
+                            EventQueueManager.instance.AddCommand(_cmdAttack); 
                         }
                     }
                 }
