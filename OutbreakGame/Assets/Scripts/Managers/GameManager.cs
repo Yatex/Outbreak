@@ -15,7 +15,6 @@ public class GameManager : MonoBehaviour
     }
 
     private void OnGameOver(bool isVictory){
-        _isGameOver = true;
         Cursor.lockState = CursorLockMode.None;
         Invoke("LoadEndGameScene", 3);
     }

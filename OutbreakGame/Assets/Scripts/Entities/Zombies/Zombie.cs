@@ -8,6 +8,7 @@ public abstract class Zombie : Actor
     private ZombieController zombieController;
     private float timeSinceAttack = 0;
 
+    private bool IsDead = false;
     private Animator animator => GetComponent<Animator>();
     private Character target;
 
@@ -58,6 +59,11 @@ public abstract class Zombie : Actor
         }
         else
         {
+            if(!IsDead){
+                GlobalData.instance.ZombiesKilled++;
+                IsDead = true;
+            }
+
             animator.SetBool("isWalking", false);
             animator.SetBool("isPunching", false);
             animator.SetBool("died", true);
