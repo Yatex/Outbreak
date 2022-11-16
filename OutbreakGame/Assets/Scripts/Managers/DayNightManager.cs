@@ -8,6 +8,8 @@ class DayNightManager : MonoBehaviour
     [SerializeField] private DayNightPresets Presets;
 
     static private DayNightManager Instance;
+
+    private Color originalSkyboxTint;
     
     private void Awake()
     {
@@ -16,6 +18,8 @@ class DayNightManager : MonoBehaviour
     }
 
     void Start(){
+        originalSkyboxTint = RenderSettings.skybox.GetColor("_Tint");
+
         if (RenderSettings.sun == null)
         {
             var lights = FindObjectsOfType<Light>();
@@ -28,6 +32,10 @@ class DayNightManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    void OnDestroy(){
+        RenderSettings.skybox.SetColor("_Tint",  originalSkyboxTint);
     }
 
     void Update(){
