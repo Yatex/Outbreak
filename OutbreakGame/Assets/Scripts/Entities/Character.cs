@@ -21,12 +21,14 @@ public class Character : Actor
     [SerializeField] private List<Gun> _guns;
     [SerializeField] private Gun _currentGun;
     [SerializeField] private Animator animator;
+    [SerializeField] private Light lantern;
 
     [SerializeField] private KeyCode _moveForward = KeyCode.W;
     [SerializeField] private KeyCode _moveBackward= KeyCode.S;
     [SerializeField] private KeyCode _moveLeft = KeyCode.A;
     [SerializeField] private KeyCode _moveRight = KeyCode.D;
     [SerializeField] private KeyCode _jump = KeyCode.Space;
+    [SerializeField] private KeyCode _lantern = KeyCode.F;
 
     [SerializeField] private KeyCode _attack = KeyCode.Mouse0;
     [SerializeField] private KeyCode _aim = KeyCode.Mouse1;
@@ -47,6 +49,7 @@ public class Character : Actor
     private CmdRotation _cmdRotateLeft;
     private CmdRotation _cmdRotateRight;
     private CmdAttack _cmdAttack;
+    private CmdLantern _cmdLantern;
 
     // Start is called before the first frame update
     void Start()
@@ -62,6 +65,8 @@ public class Character : Actor
         _cmdRotateLeft = new CmdRotation(_movementController, Vector3.left);
         _cmdRotateRight = new CmdRotation(_movementController, Vector3.right);
         _cmdAttack = new CmdAttack(_currentGun);
+        _cmdLantern = new CmdLantern(lantern);
+
         camThirdPerson = GameObject.Find("ThirdPersonCineMachine");
         camThirdPerson.GetComponent<Cinemachine.CinemachineVirtualCamera>();
         camAim = GameObject.Find("AimCineMachine");
@@ -177,7 +182,8 @@ public class Character : Actor
                     //camThirdPerson.SetActive(true);
                 }
             }
-        
+
+           
             if (Input.GetKey(_moveRight))
             {
                 EventQueueManager.instance.AddCommand(_cmdMoveRight);
@@ -211,7 +217,11 @@ public class Character : Actor
                     //camThirdPerson.SetActive(true);
                 }
             }
-       
+            
+            if(Input.GetKeyDown(_lantern)){
+                EventQueueManager.instance.AddCommand(_cmdLantern);
+            }
+        
 
             if(Input.GetKeyDown(_weaponSlot1))
             {
