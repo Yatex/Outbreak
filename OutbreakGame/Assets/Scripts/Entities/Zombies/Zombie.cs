@@ -5,7 +5,7 @@ public abstract class Zombie : Actor
     public ZombieStats ZombieStats => _zombieStats;
     [SerializeField] private ZombieStats _zombieStats;
     private LifeController lifeController;
-    private ZombieController zombieController;
+    public ZombieController zombieController;
     private float timeSinceAttack = 0;
 
     private bool IsDead = false;
