@@ -14,20 +14,61 @@ public class Gun : MonoBehaviour, IGun
     public int BulletCount => _bulletCount;
     [SerializeField] protected int _bulletCount;
 
+    [SerializeField] public Camera cam;
+    [SerializeField] public float shootingRange = 100f;
+    [SerializeField] public float nextTimeToShoot = 0f;
+    [SerializeField] public float fireCharge = 15f;
+
+    [SerializeField] public ParticleSystem muzzleSpark;
+    [SerializeField] public GameObject woodedEffect;
+    [SerializeField] public GameObject bloodEffect;
+
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip bulletHit;
+
     private void Start(){
         Reload();
     }
 
     public virtual void Attack(){
-        if(_bulletCount > 0)
+        if(_bulletCount > 0 && Input.GetButton("Fire1") && Input.GetButton("Fire2") && Time.time >= nextTimeToShoot)
         {
-            var bullet = Instantiate(BulletPrefab, transform.position, transform.rotation);
-            bullet.name = "Bullet";
-            bullet.GetComponent<Bullet>().SetOwner(this);
+            nextTimeToShoot = Time.time + 1.6f / fireCharge;
+            Shoot();
             _bulletCount--;
             UI_AmmoUpdater();
         }
         
+    }
+
+    private void Shoot()
+    {
+        muzzleSpark.Play();
+        RaycastHit hitInfo;
+
+        if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hitInfo, shootingRange))
+        {
+
+            ObjectToHit objectToHit = hitInfo.transform.GetComponent<ObjectToHit>();
+
+
+
+            if (hitInfo.transform.name == "StrongZombie(Clone)" || hitInfo.transform.name == "WeakZombie(Clone)")
+            {
+                IDamageable damageable = hitInfo.transform.GetComponent<IDamageable>();
+                damageable?.TakeDamage(Damage);
+                GameObject bloodGo = Instantiate(bloodEffect, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
+                Destroy(bloodGo, 1f);
+
+            }
+            else
+            {
+                GameObject woodGo = Instantiate(woodedEffect, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
+                Destroy(woodGo, 1f);
+            }
+
+
+        }
     }
 
     public void Reload(){
