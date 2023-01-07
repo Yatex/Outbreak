@@ -23,7 +23,7 @@ public class GrenadeThrowingController : MonoBehaviour
     private void ThrowGrenade(){
         GameObject grenade = Instantiate(_grenadePrefab, transform.position + transform.forward + transform.up, transform.rotation);
         Rigidbody rb = grenade.GetComponent<Rigidbody>();
-        rb.AddForce(transform.forward * _throwForce);
+        rb.AddForce(transform.forward * _throwForce, ForceMode.VelocityChange);
 
     }
 }
