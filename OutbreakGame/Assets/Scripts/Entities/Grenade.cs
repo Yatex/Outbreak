@@ -55,7 +55,7 @@ public class Grenade : MonoBehaviour
                 rb.AddExplosionForce(_force, transform.position, _radius);
             }
 
-            LifeController lc = GetComponent<LifeController>();
+            LifeController lc = collider.GetComponent<LifeController>();
             if(lc != null){
                 lc.TakeDamage(_damage);
             }

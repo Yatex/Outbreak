@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GrenadeThrowing : MonoBehaviour
+public class GrenadeThrowingController : MonoBehaviour
 {
     [SerializeField] private GameObject _grenadePrefab;
     [SerializeField] private float _throwForce = 40f;
@@ -21,7 +21,7 @@ public class GrenadeThrowing : MonoBehaviour
     }
 
     private void ThrowGrenade(){
-        GameObject grenade = Instantiate(_grenadePrefab, transform.position, transform.rotation);
+        GameObject grenade = Instantiate(_grenadePrefab, transform.position + transform.forward + transform.up, transform.rotation);
         Rigidbody rb = grenade.GetComponent<Rigidbody>();
         rb.AddForce(transform.forward * _throwForce);
 
