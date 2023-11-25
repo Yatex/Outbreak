@@ -2,8 +2,8 @@ using UnityEngine;
 
 class DayNightManager : MonoBehaviour
 {
-    [SerializeField] private float CycleSpeed = 1f;
-    [SerializeField] private float TimeOfDay = 12;
+    [SerializeField] private float CycleSpeed = 0.01f;
+    [SerializeField] private float TimeOfDay = 4;
 
     [SerializeField] private DayNightPresets Presets;
 

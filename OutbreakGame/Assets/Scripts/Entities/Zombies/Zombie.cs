@@ -2,15 +2,22 @@ using UnityEngine;
 
 public abstract class Zombie : Actor
 {
+    public delegate void ZombieDeathHandler();
+    public static event ZombieDeathHandler OnZombieDeath;
     public ZombieStats ZombieStats => _zombieStats;
     [SerializeField] private ZombieStats _zombieStats;
     private LifeController lifeController;
     public ZombieController zombieController;
     private float timeSinceAttack = 0;
+    private CapsuleCollider capsuleCollider;
 
     private bool IsDead = false;
     private Animator animator => GetComponent<Animator>();
     private Character target;
+
+    public string targetTag = "Zombie";
+
+    private Rigidbody rb;
 
 
     void Start(){
@@ -39,6 +46,7 @@ public abstract class Zombie : Actor
                 {
                     animator.SetBool("isPunching", false);
                     animator.SetBool("isWalking", true);
+                    animator.SetBool("died", false);
                     EventQueueManager.instance.AddCommand(new CmdMovement(
                         zombieController,
                         targetPosition,
@@ -49,9 +57,10 @@ public abstract class Zombie : Actor
                 {
                     if (timeSinceAttack + ZombieStats.TimeBetweenAttacks + 1 < Time.time)
                     {
+                        animator.SetBool("died", false);
                         animator.SetBool("isWalking", false);
                         animator.SetBool("isPunching", true);
-                        Invoke("ZombieDealDamage", 2);
+                        Invoke("ZombieDealDamage", 1.4f);
                         timeSinceAttack = Time.time;
                     }
                 }
@@ -59,14 +68,28 @@ public abstract class Zombie : Actor
         }
         else
         {
-            if(!IsDead){
-                GlobalData.instance.ZombiesKilled++;
+            if (!IsDead){
+                rb = gameObject.GetComponent<Rigidbody>();
+                rb.isKinematic = true;
+                capsuleCollider = GetComponent<CapsuleCollider>();
+                capsuleCollider.enabled = false;
                 IsDead = true;
+                animator.SetBool("isWalking", false);
+                animator.SetBool("isPunching", false);
+                animator.SetBool("died", true);
+                string objectName = gameObject.name;
+                if (objectName == "Zombie1(Clone)")
+                {
+                    GameObject[] objectsToDestroy = GameObject.FindGameObjectsWithTag(targetTag);
+                    foreach (GameObject obj in objectsToDestroy)
+                    {
+                        if(obj != null){
+                            obj.GetComponent<Zombie>().lifeController.TakeDamage(1000f);
+                        }
+                    }
+                }
+                OnZombieDeath?.Invoke();
             }
-
-            animator.SetBool("isWalking", false);
-            animator.SetBool("isPunching", false);
-            animator.SetBool("died", true);
         }
     }
 

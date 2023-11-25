@@ -12,5 +12,7 @@ public interface IGun
 
     void Attack();
     void Reload();
+
+    void Punch();
     
 }

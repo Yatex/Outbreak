@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 8206468015145481119}
   m_Layer: 3
   m_Name: WeakZombie
-  m_TagString: Untagged
+  m_TagString: Zombie
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -67,6 +67,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _actorStats: {fileID: 11400000, guid: 7a06648b4bd406244b9440bf53627f68, type: 2}
   _zombieStats: {fileID: 11400000, guid: 374269e633b7949428f7eb612bcd2739, type: 2}
+  zombieController: {fileID: 0}
+  targetTag: Zombie
 --- !u!114 &6134535244290860826
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -407,6 +409,10 @@ PrefabInstance:
     - target: {fileID: 5567237881422871782, guid: 5b7ea920f620b734d8951ff1f6ca7c40, type: 3}
       propertyPath: m_Layer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 5b7ea920f620b734d8951ff1f6ca7c40, type: 3}
+      propertyPath: m_Controller
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 6240733294840144465, guid: 5b7ea920f620b734d8951ff1f6ca7c40, type: 3}
       propertyPath: m_Layer

@@ -19,6 +19,13 @@ public class Gun : MonoBehaviour, IGun
     [SerializeField] public float nextTimeToShoot = 0f;
     [SerializeField] public float fireCharge = 15f;
 
+    public float giveDamageOf = 10f;
+    [SerializeField] public float punchRange = 3f;
+
+    [SerializeField] public float punchCharge = 150f;
+
+    [SerializeField]  public float nextTimeToPunch = 0f;
+
     [SerializeField] public ParticleSystem muzzleSpark;
     [SerializeField] public GameObject woodedEffect;
     [SerializeField] public GameObject bloodEffect;
@@ -28,6 +35,34 @@ public class Gun : MonoBehaviour, IGun
 
     private void Start(){
         Reload();
+    }
+
+    public virtual void Punch()
+    {
+
+        if(Input.GetButton("v") && !Input.GetButton("Fire2"))
+        {
+            Invoke("PunchZombie", 1);
+            
+        }
+        
+    }
+
+    public virtual void PunchZombie()
+    {
+        nextTimeToPunch = Time.time + 1.6f / punchCharge;
+            RaycastHit hitInfo;
+            if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hitInfo, punchRange))
+                {
+                ObjectToHit objectToHit = hitInfo.transform.GetComponent<ObjectToHit>();
+                if (hitInfo.transform.name == "StrongZombie(Clone)" || hitInfo.transform.name == "WeakZombie(Clone)" || hitInfo.transform.name == "Zombie1(Clone)")
+                {
+                    IDamageable damageable = hitInfo.transform.GetComponent<IDamageable>();
+                    damageable?.TakeDamage(Damage);
+                    GameObject bloodGo = Instantiate(bloodEffect, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
+                    Destroy(bloodGo, 1f);
+                }
+        }
     }
 
     public virtual void Attack(){
@@ -48,12 +83,8 @@ public class Gun : MonoBehaviour, IGun
 
         if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hitInfo, shootingRange))
         {
-
             ObjectToHit objectToHit = hitInfo.transform.GetComponent<ObjectToHit>();
-
-
-
-            if (hitInfo.transform.name == "StrongZombie(Clone)" || hitInfo.transform.name == "WeakZombie(Clone)")
+            if (hitInfo.transform.name == "StrongZombie(Clone)" || hitInfo.transform.name == "WeakZombie(Clone)" || hitInfo.transform.name == "Zombie1(Clone)")
             {
                 IDamageable damageable = hitInfo.transform.GetComponent<IDamageable>();
                 damageable?.TakeDamage(Damage);

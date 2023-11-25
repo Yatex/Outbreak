@@ -10,7 +10,11 @@ public class Rifle : MonoBehaviour
     [SerializeField]  public float shootingRange = 100f;
     [SerializeField]  public float nextTimeToShoot = 0f;
     [SerializeField] public float fireCharge = 15f;
+    public float punchRange = 10f;
 
+    [SerializeField] public float punchCharge = 15f;
+
+    [SerializeField]  public float nextTimeToPunch = 0f;
     [SerializeField] public ParticleSystem muzzleSpark;
     [SerializeField] public GameObject woodedEffect;
     [SerializeField] public GameObject bloodEffect;
@@ -50,5 +54,35 @@ public class Rifle : MonoBehaviour
 
  
         }
+    }
+
+    private void Punch()
+    {
+
+        if(Input.GetButton("Fire1") && !Input.GetButton("Fire2"))
+        {
+            Debug.Log("punch2");
+            nextTimeToPunch = Time.time + 1.6f / punchCharge;
+            //muzzleSpark.Play();
+            RaycastHit hitInfo;
+
+            if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hitInfo, punchRange))
+            {
+
+                ObjectToHit objectToHit = hitInfo.transform.GetComponent<ObjectToHit>();
+
+
+
+                if (hitInfo.transform.name == "StrongZombie(Clone)" || hitInfo.transform.name == "WeakZombie(Clone)")
+                {
+                    IDamageable damageable = hitInfo.transform.GetComponent<IDamageable>();
+                    damageable?.TakeDamage(200f);
+                    GameObject bloodGo = Instantiate(bloodEffect, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
+                    Destroy(bloodGo, 1f);
+
+                }
+            }
+        }
+        
     }
 }

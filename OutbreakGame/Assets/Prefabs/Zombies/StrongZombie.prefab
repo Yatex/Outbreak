@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 1698492959616122026}
   m_Layer: 3
   m_Name: StrongZombie
-  m_TagString: Untagged
+  m_TagString: Zombie
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -67,6 +67,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _actorStats: {fileID: 11400000, guid: 426fad9097b392640b9de366443243a1, type: 2}
   _zombieStats: {fileID: 11400000, guid: 5cdf4041abbeb554ea73015679cb5705, type: 2}
+  zombieController: {fileID: 0}
+  targetTag: Zombie
 --- !u!114 &7731154321985708862
 MonoBehaviour:
   m_ObjectHideFlags: 0

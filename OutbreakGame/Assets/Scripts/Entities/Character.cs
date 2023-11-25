@@ -12,7 +12,12 @@ public class Character : Actor
     private CapsuleCollider capsuleCollider;
     private Rigidbody rigidBody;
     public float nextTimeToShoot = 0f;
+    public float nextTimeToPunch = 0f;
     public float fireCharge = 15f;
+
+    public float punchCharge = 150f;
+
+    public float punchRange = 3f;
 
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip rifle_shot;
@@ -33,6 +38,7 @@ public class Character : Actor
     [SerializeField] private KeyCode _lantern = KeyCode.F;
 
     [SerializeField] private KeyCode _attack = KeyCode.Mouse0;
+    [SerializeField] private KeyCode _punch = KeyCode.V;
     [SerializeField] private KeyCode _aim = KeyCode.Mouse1;
     [SerializeField] private KeyCode _reload = KeyCode.R;
 
@@ -51,6 +57,7 @@ public class Character : Actor
     private CmdRotation _cmdRotateLeft;
     private CmdRotation _cmdRotateRight;
     private CmdAttack _cmdAttack;
+    private CmdPunch _cmdPunch;
     private CmdLantern _cmdLantern;
 
     // Start is called before the first frame update
@@ -68,6 +75,7 @@ public class Character : Actor
         _cmdRotateRight = new CmdRotation(_movementController, Vector3.right);
         _cmdAttack = new CmdAttack(_currentGun);
         _cmdLantern = new CmdLantern(lantern);
+        _cmdPunch = new CmdPunch(_currentGun);
 
         camThirdPerson = GameObject.Find("ThirdPersonCineMachine");
         camThirdPerson.GetComponent<Cinemachine.CinemachineVirtualCamera>();
@@ -117,6 +125,12 @@ public class Character : Actor
                         EventQueueManager.instance.AddCommand(_cmdAttack);
                     }
                 }
+                else if(Input.GetKey(_punch))
+                    {
+                        Punch();
+                        nextTimeToPunch = Time.time + 1.6f / punchCharge;
+                        EventQueueManager.instance.AddCommand(_cmdPunch);
+                    }
                 else if (Input.GetKeyDown(_jump))
                 {
                     Jump();
@@ -144,13 +158,18 @@ public class Character : Actor
                     }
                     //camThirdPerson.SetActive(false);
                 }
+                else if(Input.GetKey(_punch))
+                    {
+                        Punch();
+                        nextTimeToPunch = Time.time + 1.6f / punchCharge;
+                        EventQueueManager.instance.AddCommand(_cmdPunch);
+                    }
                 else
                 {
                     Walk();
                     //camThirdPerson.SetActive(true);
                 }
             }
-        
             EventQueueManager.instance.AddCommand(_cmdRotateLeft);
             EventQueueManager.instance.AddCommand(_cmdRotateRight);
             if (Input.GetKey(_moveLeft))
@@ -181,6 +200,12 @@ public class Character : Actor
                     }
                     //camThirdPerson.SetActive(false);
                 }
+                else if(Input.GetKey(_punch))
+                    {
+                        Punch();
+                        nextTimeToPunch = Time.time + 1.6f / punchCharge;
+                        EventQueueManager.instance.AddCommand(_cmdPunch);
+                    }
                 else
                 {
                     Walk();
@@ -217,6 +242,12 @@ public class Character : Actor
                     }
                     //camThirdPerson.SetActive(false);
                 }
+                else if(Input.GetKey(_punch))
+                    {
+                        Punch();
+                        nextTimeToPunch = Time.time + 1.6f / punchCharge;
+                        EventQueueManager.instance.AddCommand(_cmdPunch);
+                    }
                 else
                 {
                     Walk();
@@ -269,6 +300,12 @@ public class Character : Actor
                         }
                     }
                 }
+                else if(Input.GetKey(_punch))
+                    {
+                        Punch();
+                        nextTimeToPunch = Time.time + 1.6f / punchCharge;
+                        EventQueueManager.instance.AddCommand(_cmdPunch);
+                    }
                 else if (Input.GetKey(_reload))
                 {
                     Reload();
@@ -324,7 +361,18 @@ public class Character : Actor
         animator.SetBool("Idle", false);
         animator.SetBool("Running", false);
         animator.SetBool("RifleWalk", false);
+        animator.SetBool("Punch", false);
         animator.SetBool("Walk", true);
+        animator.ResetTrigger("Jump");
+    }
+
+    private void Punch()
+    {
+        animator.SetBool("Idle", false);
+        animator.SetBool("Running", false);
+        animator.SetBool("RifleWalk", false);
+        animator.SetBool("Walk", false);
+        animator.SetBool("Punch", true);
         animator.ResetTrigger("Jump");
     }
 
@@ -333,6 +381,7 @@ public class Character : Actor
         animator.SetBool("Walk", false);
         animator.SetBool("Running", false);
         animator.SetBool("IdleAim", false);
+        animator.SetBool("Punch", false);
         animator.SetBool("Idle", true);
         animator.ResetTrigger("Jump");
         animator.SetBool("Reloading", false);
@@ -342,6 +391,7 @@ public class Character : Actor
     {
         animator.SetBool("Idle", false);
         animator.SetBool("Walk", false);
+        animator.SetBool("Punch", false);
         animator.SetBool("Running", true);
         animator.ResetTrigger("Jump");
     }
@@ -352,6 +402,7 @@ public class Character : Actor
         animator.SetBool("Idle", false);
         animator.SetBool("Walk", false);
         animator.SetBool("Running", false);
+        animator.SetBool("Punch", false);
         animator.SetTrigger("Jump");
         capsuleCollider.height = 0.9f;
         rigidBody.useGravity = false;
@@ -368,6 +419,7 @@ public class Character : Actor
     {
         animator.SetBool("Idle", false);
         animator.SetBool("RifleWalk", false);
+        animator.SetBool("Punch", false);
         animator.SetBool("IdleAim", true);
         animator.SetBool("Reloading", false);
     }
@@ -378,6 +430,7 @@ public class Character : Actor
         animator.SetBool("Walk", false);
         animator.SetBool("IdleAim", false);
         animator.SetBool("Reloading", false);
+        animator.SetBool("Punch", false);
         animator.SetBool("Idle", false);
     }
 
@@ -386,6 +439,7 @@ public class Character : Actor
         _currentGun.EmptyMagazine();
         animator.SetBool("Reloading", true);
         animator.SetBool("RifleWalk", false);
+        animator.SetBool("Punch", false);
         animator.SetBool("IdleAim", false);
         audioSource.clip = reload;
         audioSource.Play();
