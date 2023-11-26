@@ -3,7 +3,9 @@ guid: ef06fbb22f3a75e499c074fe6c452dab
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - waveEndAudioSource: {instanceID: 0}
+  - waveEndAudioClip: {fileID: 8300000, guid: ccccb96305ef6234db6f7f007b29d7ac, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

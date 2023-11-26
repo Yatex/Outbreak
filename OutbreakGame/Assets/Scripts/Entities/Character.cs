@@ -19,6 +19,8 @@ public class Character : Actor
 
     public float punchRange = 3f;
 
+    private bool isReloading = false;
+
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip rifle_shot;
     [SerializeField] private AudioClip empty_gunshot;
@@ -90,249 +92,253 @@ public class Character : Actor
     // Update is called once per frame
     void Update()
     {
-        if (lifeController.CurrentLife > 0.0)
+        if(!isReloading)
         {
-            Cursor.lockState = CursorLockMode.Locked; //or Cursor.lockState = CursorLockMode.None;
+            if (lifeController.CurrentLife > 0.0)
+            {
+                Cursor.lockState = CursorLockMode.Locked; //or Cursor.lockState = CursorLockMode.None;
 
-            //TODO: Luego habria que verificar si muere en el lifeController
-            if(Input.GetKey(KeyCode.Y)) GetComponent<IDamageable>().TakeDamage(20); //EventsManager.instance.EventGameOver(false);
-            /*  *   *   *   *   *   *   *   *   *   */
-            if (Input.GetKey(_moveForward))
-            {
-                EventQueueManager.instance.AddCommand(_cmdMoveForward);
-                if (Input.GetButton("Sprint")) 
+                //TODO: Luego habria que verificar si muere en el lifeController
+                if(Input.GetKey(KeyCode.Y)) GetComponent<IDamageable>().TakeDamage(20); //EventsManager.instance.EventGameOver(false);
+                /*  *   *   *   *   *   *   *   *   *   */
+                if(Input.GetKey(_moveForward))
                 {
-                    EventQueueManager.instance.AddCommand(_cmdSprintForward);
-                    if (Input.GetKeyDown(_jump))
+                    EventQueueManager.instance.AddCommand(_cmdMoveForward);
+                    if (Input.GetButton("Sprint")) 
                     {
-                        Jump();
-                        //camThirdPerson.SetActive(true);
+                        EventQueueManager.instance.AddCommand(_cmdSprintForward);
+                        if (Input.GetKeyDown(_jump))
+                        {
+                            Jump();
+                            //camThirdPerson.SetActive(true);
+                        }
+                        else
+                        {
+                            Sprint();
+                            //camThirdPerson.SetActive(true);
+                        }
                     }
-                    else
+                    else if (Input.GetKey(_aim))
                     {
-                        Sprint();
-                        //camThirdPerson.SetActive(true);
-                    }
-                }
-                else if (Input.GetKey(_aim))
-                {
-                    AimWalk();
-                    //camThirdPerson.SetActive(false);
-                    if (Input.GetKey(_attack) && Time.time >= nextTimeToShoot)
-                    {
-                        ShootAudio();
-                        nextTimeToShoot = Time.time + 1.6f / fireCharge;
-                        EventQueueManager.instance.AddCommand(_cmdAttack);
-                    }
-                }
-                else if(Input.GetKey(_punch))
-                    {
-                        Punch();
-                        nextTimeToPunch = Time.time + 1.6f / punchCharge;
-                        EventQueueManager.instance.AddCommand(_cmdPunch);
-                    }
-                else if (Input.GetKeyDown(_jump))
-                {
-                    Jump();
-                    //camThirdPerson.SetActive(true);
-                }
-                else
-                {
-                    Walk();
-                    //camThirdPerson.SetActive(true);
-                }
-
-            }
-            
-            if(Input.GetKey(_moveBackward))
-            {
-                EventQueueManager.instance.AddCommand(_cmdMoveBack);
-                if (Input.GetKey(_aim))
-                {
-                    AimWalk();
-                    if (Input.GetKey(_attack) && Time.time >= nextTimeToShoot)
-                    {
-                        ShootAudio();
-                        nextTimeToShoot = Time.time + 1.6f / fireCharge;
-                        EventQueueManager.instance.AddCommand(_cmdAttack);
-                    }
-                    //camThirdPerson.SetActive(false);
-                }
-                else if(Input.GetKey(_punch))
-                    {
-                        Punch();
-                        nextTimeToPunch = Time.time + 1.6f / punchCharge;
-                        EventQueueManager.instance.AddCommand(_cmdPunch);
-                    }
-                else
-                {
-                    Walk();
-                    //camThirdPerson.SetActive(true);
-                }
-            }
-            EventQueueManager.instance.AddCommand(_cmdRotateLeft);
-            EventQueueManager.instance.AddCommand(_cmdRotateRight);
-            if (Input.GetKey(_moveLeft))
-            {
-                EventQueueManager.instance.AddCommand(_cmdMoveLeft);
-                EventQueueManager.instance.AddCommand(_cmdRotateLeft);
-                if (Input.GetButton("Sprint") && Input.GetKey(_moveForward))
-                {
-                    if (Input.GetKeyDown(_jump))
-                    {
-                        Jump();
-                        //camThirdPerson.SetActive(true);
-                    }
-                    else
-                    {
-                        Sprint();
-                        //camThirdPerson.SetActive(true);
-                    }
-                }
-                else if (Input.GetKey(_aim))
-                {
-                    AimWalk();
-                    if (Input.GetKey(_attack) && Time.time >= nextTimeToShoot)
-                    {
-                        ShootAudio();
-                        nextTimeToShoot = Time.time + 1.6f / fireCharge;
-                        EventQueueManager.instance.AddCommand(_cmdAttack);
-                    }
-                    //camThirdPerson.SetActive(false);
-                }
-                else if(Input.GetKey(_punch))
-                    {
-                        Punch();
-                        nextTimeToPunch = Time.time + 1.6f / punchCharge;
-                        EventQueueManager.instance.AddCommand(_cmdPunch);
-                    }
-                else
-                {
-                    Walk();
-                    //camThirdPerson.SetActive(true);
-                }
-            }
-
-           
-            if (Input.GetKey(_moveRight))
-            {
-                EventQueueManager.instance.AddCommand(_cmdMoveRight);
-                EventQueueManager.instance.AddCommand(_cmdRotateRight);
-                if (Input.GetButton("Sprint") && Input.GetKey(_moveForward))
-                {
-                    if (Input.GetKeyDown(_jump))
-                    {
-                        Jump();
-                        //camThirdPerson.SetActive(true);
-                    }
-                    else
-                    {
-                        Sprint();
-                        //camThirdPerson.SetActive(true);
-                    }
-                }
-                else if (Input.GetKey(_aim))
-                {
-                    AimWalk();
-                    if (Input.GetKey(_attack) && Time.time >= nextTimeToShoot)
-                    {
-                        ShootAudio();
-                        nextTimeToShoot = Time.time + 1.6f / fireCharge;
-                        EventQueueManager.instance.AddCommand(_cmdAttack);
-                    }
-                    //camThirdPerson.SetActive(false);
-                }
-                else if(Input.GetKey(_punch))
-                    {
-                        Punch();
-                        nextTimeToPunch = Time.time + 1.6f / punchCharge;
-                        EventQueueManager.instance.AddCommand(_cmdPunch);
-                    }
-                else
-                {
-                    Walk();
-                    //camThirdPerson.SetActive(true);
-                }
-            }
-            
-            if(Input.GetKeyDown(_lantern)){
-                EventQueueManager.instance.AddCommand(_cmdLantern);
-            }
-        
-
-            if(Input.GetKeyDown(_weaponSlot1))
-            {
-                ChangeWeapon(0);
-            }
-        
-            if(Input.GetKeyDown(_weaponSlot2))
-            {
-                ChangeWeapon(1);
-            }
-        
-            if(Input.GetKeyDown(_setVictory))
-            {
-                EventsManager.instance.EventGameOver(true);
-            }
-        
-            if(Input.GetKeyDown(_setDefeat))
-            {
-                GetComponent<IDamageable>().TakeDamage(20);
-            }
-
-            if (!Input.GetKey(_moveLeft) && !Input.GetKey(_moveRight) && !Input.GetKey(_moveForward) && !Input.GetKey(_moveBackward))
-            {
-                if (Input.GetKey(_aim))
-                {
-                    //camThirdPerson.SetActive(false);
-                    if (Input.GetKey(_reload))
-                    {
-                        Reload();
-                    }
-                    else
-                    {
-                        Aim();
+                        AimWalk();
+                        //camThirdPerson.SetActive(false);
                         if (Input.GetKey(_attack) && Time.time >= nextTimeToShoot)
                         {
                             ShootAudio();
                             nextTimeToShoot = Time.time + 1.6f / fireCharge;
-                            EventQueueManager.instance.AddCommand(_cmdAttack); 
+                            EventQueueManager.instance.AddCommand(_cmdAttack);
                         }
                     }
-                }
-                else if(Input.GetKey(_punch))
+                    else if(Input.GetKey(_punch))
+                        {
+                            Punch();
+                            nextTimeToPunch = Time.time + 1.6f / punchCharge;
+                            EventQueueManager.instance.AddCommand(_cmdPunch);
+                        }
+                    else if (Input.GetKeyDown(_jump))
                     {
-                        Punch();
-                        nextTimeToPunch = Time.time + 1.6f / punchCharge;
-                        EventQueueManager.instance.AddCommand(_cmdPunch);
+                        Jump();
+                        //camThirdPerson.SetActive(true);
                     }
-                else if (Input.GetKey(_reload))
-                {
-                    Reload();
-                    //camThirdPerson.SetActive(true);
+                    else
+                    {
+                        Walk();
+                        //camThirdPerson.SetActive(true);
+                    }
+
                 }
-                else if (Input.GetKeyDown(_jump))
+                
+                if(Input.GetKey(_moveBackward))
                 {
-                    Jump();
-                    //camThirdPerson.SetActive(true);
+                    EventQueueManager.instance.AddCommand(_cmdMoveBack);
+                    if (Input.GetKey(_aim))
+                    {
+                        AimWalk();
+                        if (Input.GetKey(_attack) && Time.time >= nextTimeToShoot)
+                        {
+                            ShootAudio();
+                            nextTimeToShoot = Time.time + 1.6f / fireCharge;
+                            EventQueueManager.instance.AddCommand(_cmdAttack);
+                        }
+                        //camThirdPerson.SetActive(false);
+                    }
+                    else if(Input.GetKey(_punch))
+                        {
+                            Punch();
+                            nextTimeToPunch = Time.time + 1.6f / punchCharge;
+                            EventQueueManager.instance.AddCommand(_cmdPunch);
+                        }
+                    else
+                    {
+                        Walk();
+                        //camThirdPerson.SetActive(true);
+                    }
                 }
-                else
+                EventQueueManager.instance.AddCommand(_cmdRotateLeft);
+                EventQueueManager.instance.AddCommand(_cmdRotateRight);
+                if (Input.GetKey(_moveLeft))
                 {
-                    Idle();
-                    //camThirdPerson.SetActive(true);
+                    EventQueueManager.instance.AddCommand(_cmdMoveLeft);
+                    EventQueueManager.instance.AddCommand(_cmdRotateLeft);
+                    if (Input.GetButton("Sprint") && Input.GetKey(_moveForward))
+                    {
+                        if (Input.GetKeyDown(_jump))
+                        {
+                            Jump();
+                            //camThirdPerson.SetActive(true);
+                        }
+                        else
+                        {
+                            Sprint();
+                            //camThirdPerson.SetActive(true);
+                        }
+                    }
+                    else if (Input.GetKey(_aim))
+                    {
+                        AimWalk();
+                        if (Input.GetKey(_attack) && Time.time >= nextTimeToShoot)
+                        {
+                            ShootAudio();
+                            nextTimeToShoot = Time.time + 1.6f / fireCharge;
+                            EventQueueManager.instance.AddCommand(_cmdAttack);
+                        }
+                        //camThirdPerson.SetActive(false);
+                    }
+                    else if(Input.GetKey(_punch))
+                        {
+                            Punch();
+                            nextTimeToPunch = Time.time + 1.6f / punchCharge;
+                            EventQueueManager.instance.AddCommand(_cmdPunch);
+                        }
+                    else
+                    {
+                        Walk();
+                        //camThirdPerson.SetActive(true);
+                    }
+                }
+
+            
+                if (Input.GetKey(_moveRight))
+                {
+                    EventQueueManager.instance.AddCommand(_cmdMoveRight);
+                    EventQueueManager.instance.AddCommand(_cmdRotateRight);
+                    if (Input.GetButton("Sprint") && Input.GetKey(_moveForward))
+                    {
+                        if (Input.GetKeyDown(_jump))
+                        {
+                            Jump();
+                            //camThirdPerson.SetActive(true);
+                        }
+                        else
+                        {
+                            Sprint();
+                            //camThirdPerson.SetActive(true);
+                        }
+                    }
+                    else if (Input.GetKey(_aim))
+                    {
+                        AimWalk();
+                        if (Input.GetKey(_attack) && Time.time >= nextTimeToShoot)
+                        {
+                            ShootAudio();
+                            nextTimeToShoot = Time.time + 1.6f / fireCharge;
+                            EventQueueManager.instance.AddCommand(_cmdAttack);
+                        }
+                        //camThirdPerson.SetActive(false);
+                    }
+                    else if(Input.GetKey(_punch))
+                        {
+                            Punch();
+                            nextTimeToPunch = Time.time + 1.6f / punchCharge;
+                            EventQueueManager.instance.AddCommand(_cmdPunch);
+                        }
+                    else
+                    {
+                        Walk();
+                        //camThirdPerson.SetActive(true);
+                    }
+                }
+                
+                if(Input.GetKeyDown(_lantern)){
+                    EventQueueManager.instance.AddCommand(_cmdLantern);
+                }
+            
+
+                if(Input.GetKeyDown(_weaponSlot1))
+                {
+                    ChangeWeapon(0);
+                }
+            
+                if(Input.GetKeyDown(_weaponSlot2))
+                {
+                    ChangeWeapon(1);
+                }
+            
+                if(Input.GetKeyDown(_setVictory))
+                {
+                    EventsManager.instance.EventGameOver(true);
+                }
+            
+                if(Input.GetKeyDown(_setDefeat))
+                {
+                    GetComponent<IDamageable>().TakeDamage(20);
+                }
+
+                if (!Input.GetKey(_moveLeft) && !Input.GetKey(_moveRight) && !Input.GetKey(_moveForward) && !Input.GetKey(_moveBackward))
+                {
+                    if (Input.GetKey(_aim))
+                    {
+                        //camThirdPerson.SetActive(false);
+                        if (Input.GetKey(_reload))
+                        {
+                            Reload();
+                        }
+                        else
+                        {
+                            Aim();
+                            if (Input.GetKey(_attack) && Time.time >= nextTimeToShoot)
+                            {
+                                ShootAudio();
+                                nextTimeToShoot = Time.time + 1.6f / fireCharge;
+                                EventQueueManager.instance.AddCommand(_cmdAttack); 
+                            }
+                        }
+                    }
+                    else if(Input.GetKey(_punch))
+                        {
+                            Punch();
+                            nextTimeToPunch = Time.time + 1.6f / punchCharge;
+                            EventQueueManager.instance.AddCommand(_cmdPunch);
+                        }
+                    else if (Input.GetKey(_reload))
+                    {
+                        Reload();
+                        //camThirdPerson.SetActive(true);
+                    }
+                    else if (Input.GetKeyDown(_jump))
+                    {
+                        Jump();
+                        //camThirdPerson.SetActive(true);
+                    }
+                    else
+                    {
+                        Idle();
+                        //camThirdPerson.SetActive(true);
+                    }
                 }
             }
+            else
+            {
+                Dead();
+                Cursor.lockState = CursorLockMode.None;
+                EventsManager.instance.EventGameOver(true);
+            }
         }
-        else
-        {
-            Dead();
-        }
-
     }
 
     private void ShootAudio()
     {
-        if(_currentGun.BulletCount > 0)
+        if(_currentGun.BulletCount > 0 && _currentGun.Ammo > 0)
         {
             audioSource.clip = rifle_shot;
             
@@ -436,18 +442,33 @@ public class Character : Actor
 
     private void Reload()
     {
-        _currentGun.EmptyMagazine();
-        animator.SetBool("Reloading", true);
-        animator.SetBool("RifleWalk", false);
-        animator.SetBool("Punch", false);
-        animator.SetBool("IdleAim", false);
-        audioSource.clip = reload;
-        audioSource.Play();
-        Invoke("ReloadAmmo", 3f);
+        if(_currentGun.Ammo > 0 && _currentGun.BulletCount < _currentGun.Ammo){
+            isReloading = true;
+            _currentGun.EmptyMagazine();
+            animator.SetBool("Reloading", true);
+            animator.SetBool("RifleWalk", false);
+            animator.SetBool("Punch", false);
+            animator.SetBool("IdleAim", false);
+            audioSource.clip = reload;
+            audioSource.Play();
+            StartCoroutine(WaitForReload());
+        }
+    }
+
+    private IEnumerator WaitForReload()
+    {
+        yield return new WaitForSeconds(3f); // Adjust this time based on your reload animation duration
+        animator.SetBool("Reloading", false); // End reloading state, allowing movement again
+        _currentGun.Reload();
+        isReloading = false;
     }
 
     private void Dead()
     {
+        animator.SetBool("RifleWalk", false);
+        animator.SetBool("Punch", false);
+        animator.SetBool("IdleAim", false);
+        animator.SetBool("Walk", false);
         animator.SetBool("Dead", true);
     }
 

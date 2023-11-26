@@ -24,9 +24,14 @@ public class EventsManager : MonoBehaviour
 
     #region UI_EVENTS
     public event Action<int,int> OnAmmoChange;
+    public event Action<int> OnWaveChange;
     public event Action<float, float> OnCharacterLifeChange;
     public void AmmoChange(int currentAmmo, int maxAmmo){
         if(OnAmmoChange != null) OnAmmoChange(currentAmmo, maxAmmo);
+    }
+
+    public void WaveChange(int wave){
+        if(OnWaveChange != null) OnWaveChange(wave);
     }
 
     public void CharacterLifeChange(float currentLife, float maxLife){

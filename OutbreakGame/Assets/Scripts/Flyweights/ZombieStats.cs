@@ -10,6 +10,7 @@ public class ZombieStats : ScriptableObject
     public float HitRadius => _statValues.HitRadius;
     public float Damage => _statValues.Damage;
     public float TimeBetweenAttacks => _statValues.TimeBetweenAttacks;
+
 }
 
 [System.Serializable]

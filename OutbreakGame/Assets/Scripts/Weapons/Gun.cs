@@ -33,8 +33,12 @@ public class Gun : MonoBehaviour, IGun
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip bulletHit;
 
+    public int Ammo;
+
     private void Start(){
         Reload();
+        Ammo = 120;
+        UI_AmmoUpdater();
     }
 
     public virtual void Punch()
@@ -78,38 +82,48 @@ public class Gun : MonoBehaviour, IGun
 
     private void Shoot()
     {
-        muzzleSpark.Play();
-        RaycastHit hitInfo;
+        if(Ammo > 0){
+            muzzleSpark.Play();
+            Ammo--;
+            RaycastHit hitInfo;
 
-        if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hitInfo, shootingRange))
-        {
-            ObjectToHit objectToHit = hitInfo.transform.GetComponent<ObjectToHit>();
-            if (hitInfo.transform.name == "StrongZombie(Clone)" || hitInfo.transform.name == "WeakZombie(Clone)" || hitInfo.transform.name == "Zombie1(Clone)")
+            if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hitInfo, shootingRange))
             {
-                IDamageable damageable = hitInfo.transform.GetComponent<IDamageable>();
-                damageable?.TakeDamage(Damage);
-                GameObject bloodGo = Instantiate(bloodEffect, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
-                Destroy(bloodGo, 1f);
+                ObjectToHit objectToHit = hitInfo.transform.GetComponent<ObjectToHit>();
+                if (hitInfo.transform.name == "StrongZombie(Clone)" || hitInfo.transform.name == "WeakZombie(Clone)" || hitInfo.transform.name == "Zombie1(Clone)")
+                {
+                    IDamageable damageable = hitInfo.transform.GetComponent<IDamageable>();
+                    damageable?.TakeDamage(Damage);
+                    GameObject bloodGo = Instantiate(bloodEffect, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
+                    Destroy(bloodGo, 1f);
+
+                }
+                else
+                {
+                    GameObject woodGo = Instantiate(woodedEffect, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
+                    Destroy(woodGo, 1f);
+                }
+
 
             }
-            else
-            {
-                GameObject woodGo = Instantiate(woodedEffect, hitInfo.point, Quaternion.LookRotation(hitInfo.normal));
-                Destroy(woodGo, 1f);
-            }
-
-
         }
     }
 
     public void Reload(){
-        _bulletCount = MagSize;
-        UI_AmmoUpdater();
+        if(Ammo > 0){
+            if(Ammo >= MagSize){
+                _bulletCount = MagSize;
+            }
+            else{
+                _bulletCount = Ammo;
+            }
+            UI_AmmoUpdater();
+        }
     } 
 
     public void UI_AmmoUpdater()
     {
-        EventsManager.instance.AmmoChange(_bulletCount, _stats.MagSize);
+        EventsManager.instance.AmmoChange(_bulletCount, Ammo - _bulletCount);
     }
     public void EmptyMagazine()
     {

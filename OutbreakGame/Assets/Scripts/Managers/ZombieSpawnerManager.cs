@@ -1,8 +1,11 @@
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
-class ZombieSpawnerManager : MonoBehaviour
+public class ZombieSpawnerManager : MonoBehaviour
 {
     #region Public properties
+
     public int TotalZombiesThisWave;
     public bool AreSpawnerActives = true;
     public bool GoldZombieSpawned = false;
@@ -10,11 +13,16 @@ class ZombieSpawnerManager : MonoBehaviour
     public GameObject[] Zombies = new GameObject[0];
     public float TimeBetweenSpawns = 1f;
     public GameObject[] SpawnerMarkers;
+
+    public AudioSource waveEndAudioSource;
+    public AudioClip waveEndAudioClip;
+
+    public int ZombiesKilled;
     #endregion
 
     #region Private properties
     private int AliveZombies = 0;
-    static private ZombieSpawnerManager Instance;
+    static public ZombieSpawnerManager Instance;
     private float TimeOfLastSpawn = 0f;
     private int SpawnedZombiesThisWave = 0;
     private ZombieFactory zombieFactory;
@@ -33,14 +41,18 @@ class ZombieSpawnerManager : MonoBehaviour
         Wave = 1;
         TotalZombiesThisWave = 5;
         Zombie.OnZombieDeath += OnZombieDeath;
+        ZombiesKilled = 0;
+        UI_WaveUpdater(Wave);
     }
 
     public void OnZombieDeath(){
         AliveZombies -= 1;
-        if (AliveZombies == 0 || GoldZombieKilled)
+        ZombiesKilled += 1;
+        if ((AliveZombies == 0 && SpawnedZombiesThisWave == TotalZombiesThisWave) || GoldZombieKilled)
         {
             if (GoldZombieKilled) {
-                SpawnedZombiesThisWave = AliveZombies;
+                AliveZombies = 0;
+                SpawnedZombiesThisWave = TotalZombiesThisWave;
             }
             Wave += 1;
             TotalZombiesThisWave = (int)(5 * Wave);
@@ -48,6 +60,9 @@ class ZombieSpawnerManager : MonoBehaviour
             GoldZombieSpawned = false;
             GoldZombieKilled = false;
             TimeOfLastSpawn = Time.time;
+            TimeBetweenSpawns = TimeBetweenSpawns/Wave;
+            PlayWaveEndAudio();
+            UI_WaveUpdater(Wave);
         }
     }
 
@@ -70,5 +85,18 @@ class ZombieSpawnerManager : MonoBehaviour
         }
     }
 
+    private void PlayWaveEndAudio()
+    {
+        if (waveEndAudioSource != null && waveEndAudioClip != null)
+        {
+            waveEndAudioSource.clip = waveEndAudioClip;
+            waveEndAudioSource.Play();
+        }
+    }
+
+    public void UI_WaveUpdater(int Wave_number)
+    {
+        EventsManager.instance.WaveChange(Wave_number);
+    }
     private bool ShouldSpawnZombie() => Time.time - TimeOfLastSpawn > TimeBetweenSpawns && SpawnedZombiesThisWave < TotalZombiesThisWave;
 }

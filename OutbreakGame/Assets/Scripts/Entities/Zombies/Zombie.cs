@@ -23,6 +23,7 @@ public abstract class Zombie : Actor
     void Start(){
         lifeController = GetComponent<LifeController>();
         zombieController = GetComponent<ZombieController>();
+        ZombieStats zombieStats = Resources.Load<ZombieStats>("ZombieStats");
     }
 
     void Update(){
@@ -92,6 +93,7 @@ public abstract class Zombie : Actor
             }
         }
     }
+
 
     private void ZombieDealDamage()
     {

@@ -11,7 +11,7 @@ public class ZombieFactory
     {
         var spawnLocation = SpawnerMarkers[Random.Range(0, SpawnerMarkers.Length)];
         
-        GameObject.Instantiate(Zombies[Random.Range(0,Zombies.Length - 1)], spawnLocation.transform.position, spawnLocation.transform.rotation);
+        GameObject newZombie = GameObject.Instantiate(Zombies[Random.Range(0,Zombies.Length - 1)], spawnLocation.transform.position, spawnLocation.transform.rotation);
     }
 
     public void CreateGoldZombie(GameObject[] SpawnerMarkers, GameObject[] Zombies)

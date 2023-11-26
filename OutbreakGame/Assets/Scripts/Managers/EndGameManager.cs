@@ -12,8 +12,7 @@ public class EndGameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-    //    _zombiesKilled.text = $"{GlobalData.instance.ZombiesKilled} zombies killed";
-        _zombiesKilled.text = "Kill Zombies";
+        _zombiesKilled.text = "Zombies Killed " + ZombieSpawnerManager.Instance.ZombiesKilled.ToString();
     }
 
     // Update is called once per frame
