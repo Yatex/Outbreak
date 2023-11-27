@@ -1746,8 +1746,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46281ac0d5f60f041a3291b56f839394, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _actorStats: {fileID: 11400000, guid: 426fad9097b392640b9de366443243a1, type: 2}
-  _zombieStats: {fileID: 11400000, guid: 5cdf4041abbeb554ea73015679cb5705, type: 2}
+  _actorStats: {fileID: 11400000, guid: 5b9d37752aa02624688a7255fcacd443, type: 2}
+  _zombieStats: {fileID: 11400000, guid: fc7856db1fc5efa4e9d96b937b6fe7ce, type: 2}
   zombieController: {fileID: 0}
   targetTag: Zombie
 --- !u!114 &-2525277916326215166

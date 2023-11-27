@@ -17,16 +17,17 @@ public class ZombieSpawnerManager : MonoBehaviour
     public AudioSource waveEndAudioSource;
     public AudioClip waveEndAudioClip;
 
+    public int Wave;
+    static public ZombieSpawnerManager Instance;
+
     public int ZombiesKilled;
     #endregion
 
     #region Private properties
     private int AliveZombies = 0;
-    static public ZombieSpawnerManager Instance;
     private float TimeOfLastSpawn = 0f;
     private int SpawnedZombiesThisWave = 0;
     private ZombieFactory zombieFactory;
-    private int Wave;
     #endregion
 
     private void Awake()
