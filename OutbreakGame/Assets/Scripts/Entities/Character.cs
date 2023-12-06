@@ -333,6 +333,8 @@ public class Character : Actor
                 Cursor.lockState = CursorLockMode.None;
                 EventsManager.instance.EventGameOver(true);
             }
+        } else {
+            GetComponent<Rigidbody>().velocity = Vector3.zero;
         }
     }
 
