@@ -37,15 +37,15 @@ public class Grenade : MonoBehaviour
             _hasExploded = true;
             Explode();
         }
-        if(_countdown <= 0) Destroy(gameObject);
+        if(_countdown <= 0) {
+            Destroy(gameObject);
+            
+        }
     }
 
     private void Explode(){
-        Debug.Log("Explode");
-
-        Instantiate(_explosionPrefab, transform.position, transform.rotation);
-
-        //audioSource.Play();
+        GameObject explosion = Instantiate(_explosionPrefab, transform.position, transform.rotation);
+        // audioSource.Play();
 
         Collider[] _colliders = Physics.OverlapSphere(transform.position, _radius);
 
@@ -62,7 +62,8 @@ public class Grenade : MonoBehaviour
         }
 
         GetComponent<Renderer>().enabled = false;
-        //Destroy(gameObject);
+        
+        // Destroy(gameObject);
 
     }
 }
